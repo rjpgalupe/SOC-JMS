@@ -1,0 +1,116 @@
+<nav id="navbarH">
+  <ul class="rightnavText">
+    <li class="dropdown" (click)="toggleNotifDropdown()">
+      <input type="checkbox" id="notigDropdownToggle" class="dropdown-toggle" [ngModel]="showNotifDropdown">
+      <a>
+        <label for="notifDropdownToggle" class="dropdown-label">
+          <span class="nav-icon">
+            <i class="fa-solid fa-bell">
+              <span class="badge" *ngIf="unreadNotifications.length > 0">{{ unreadNotifications.length }}</span>
+            </i>              
+          </span>
+        </label>
+      </a>
+      <div class="dropdown-content" *ngIf="showNotifDropdown">
+        <div *ngFor="let notification of notifications">
+          <a [ngClass]="{ 'unread': notification.status === 'unread', 'read': notification.status === 'read' }" 
+              (click)="markNotificationAsRead(notification); viewJournal(notification.journalId)">
+              <i *ngIf="notification.status === 'unread'" class="fa-solid fa-envelope"></i>
+              <i *ngIf="notification.status === 'read'" class="fa-solid fa-envelope-open"></i>
+              {{ notification.message }}
+          </a>
+        </div>
+      </div>      
+    </li>
+    <li class="dropdown" (click)="toggleDropdown()">
+      <input type="checkbox" id="userDropdownToggle" class="dropdown-toggle" [ngModel]="isDropdownOpen">
+        <label for="userDropdownToggle" class="dropdown-label">
+          <span class="nav-icon">
+            <i class="fa-solid fa-user-gear"></i>
+          </span>
+        </label>
+    <div class="dropdown-menu">
+      <a routerLink="/account-settings"><i class="fa-solid fa-gear"></i> Settings</a>
+      <button class="dropdown-item" (click)="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+    </li>
+  </ul>
+</nav>
+  
+<nav id="navbarV">
+  <ul class="leftnavText">
+    <img id="dashboardLogo" src="../../assets/soc_logo.png" alt="">
+    <li *ngIf="isReviewer">
+      <a href="/reviewer/dashboard">
+        <i id="dashboardIcons" class="fa fa-line-chart" aria-hidden="true"></i>
+        Dashboard
+      </a>
+    </li>
+    <li *ngIf="isAuthor">
+      <a href="/researcher/dashboard">
+        <i id="dashboardIcons" class="fa fa-line-chart" aria-hidden="true"></i>
+        Dashboard
+      </a>
+    </li>
+    <li *ngIf="isAdmin">
+      <a href="/admin/dashboard">
+        <i id="dashboardIcons" class="fa fa-line-chart" aria-hidden="true"></i>
+        Dashboard
+      </a>
+    </li>
+    <li *ngIf="isSuperAdmin">
+      <a href="/admin/dashboard">
+        <i id="dashboardIcons" class="fa fa-line-chart" aria-hidden="true"></i>
+        Dashboard
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<div id="container">
+  <mat-tab-group>
+    <mat-tab label="Account Information">
+      <div *ngIf="user" class="account">
+        <form>
+          <h1>Account Information</h1>
+          <label for="firstName">First Name:</label>
+          <mat-form-field class="account-input">
+              <input matInput type="text" id="firstName" [(ngModel)]="user.firstName" name="firstName" disabled>
+          </mat-form-field>
+
+          <label for="lastName">Last Name:</label>
+          <mat-form-field class="account-input">
+              <input matInput type="text" id="lastName" [(ngModel)]="user.lastName" name="lastName" disabled>
+          </mat-form-field>
+
+          <label for="email">Email:</label>
+          <mat-form-field class="account-input">
+              <input matInput type="email" id="email" [(ngModel)]="user.email" name="email" disabled>
+          </mat-form-field>
+      </form>
+      </div>
+    </mat-tab>
+  
+    <mat-tab label="Change Password"> 
+      <div class="pass">
+          <form (ngSubmit)="changePassword()">
+              <h1>Change Password</h1>
+              <label for="currentPassword">Current Password: </label>
+              <mat-form-field class="password">               
+                  <input matInput type="password" [(ngModel)]="currentPassword" name="currentPassword" required>
+              </mat-form-field>
+              <label for="newPassword">New Password: </label>
+              <mat-form-field class="password">                  
+                  <input matInput type="password" [(ngModel)]="newPassword" name="newPassword" required>
+              </mat-form-field>
+              <label for="confirmNewPassword">Confirm New Password: </label>
+              <mat-form-field class="password">
+                  <input matInput type="password" [(ngModel)]="confirmNewPassword" name="confirmNewPassword" required>
+              </mat-form-field>
+              <button type="submit">Save</button>
+          </form>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+  

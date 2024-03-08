@@ -1,0 +1,74 @@
+<nav id="navbarH">
+  <ul class="rightnavText">
+    <li>
+      <a href="#" class="active">
+        <span class="nav-icon">
+          <i class="fa-solid fa-bell"></i>
+        </span>
+      </a>
+    </li>
+    <li class="dropdown" (click)="isDropdownOpen = !isDropdownOpen">
+      <input type="checkbox" id="userDropdownToggle" class="dropdown-toggle" [ngModel]="isDropdownOpen">
+        <label for="userDropdownToggle" class="dropdown-label">
+          <span class="nav-icon">
+            <i class="fa-solid fa-user-gear"></i>
+          </span>
+        </label>
+      <div class="dropdown-menu">
+        <a routerLink="/account-settings"><i class="fa-solid fa-gear"></i> Settings</a>
+        <button class="dropdown-item" (click)="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+      </div>
+    </li>
+  </ul>
+</nav>
+  
+<nav id="navbarV">
+  <ul class="leftnavText">
+    <img id="dashboardLogo" src="../../assets/soc_logo.png" alt="">
+    <li>
+      <a href="/researcher/dashboard" class="active">
+        <i id="dashboardIcons" class="fa fa-line-chart" aria-hidden="true"></i>
+        Dashboard
+      </a>
+    </li>
+    <li>
+      <a href="/researcher/journal-status">
+        <i id="dashboardIcons" class="fa-solid fa-book-open" aria-hidden="true"></i>
+      Journal
+      </a>
+    </li>
+  </ul>
+</nav>
+  
+<div class="containerBox">
+  <!-- <div class="box">
+    <a href="/admin/journal-management">
+      <span class="icon"><i class="fa-solid fa-book-open"></i></span>
+      <span class="text">View Journal Management</span>
+    </a>
+  </div> -->
+  <div id="dashboardHeader">
+    <h1>Dashboard</h1>
+    <hr>
+  </div>
+    <div id="container">
+      <div class="box">
+        <a href="/researcher/journal-submission">
+          <span class="icon"><i class="fa-solid fa-file-arrow-up"></i></span>
+          <span class="text">Submit Journal</span>
+        </a>
+      </div>
+      <div class="box">
+        <a href="/researcher/journal-status">
+          <span class="icon"><i class="fa-solid fa-book-open"></i></span>
+          <span class="text">View Journal Status</span>
+        </a>
+      </div>
+      <div class="box">
+        <a href="#">
+          <span class="icon"><i class="fa-solid fa-newspaper"></i></span>
+          <span class="text">View Published Journal</span>
+        </a>
+      </div>
+    </div>
+</div>

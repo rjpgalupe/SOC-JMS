@@ -1,0 +1,48 @@
+<nav id="navbarH">
+  <ul class="rightnavText">
+    <li>
+      <a href="#">
+        <span class="nav-icon">
+          <i class="fa-solid fa-bell"></i>
+        </span>
+      </a>
+    </li>
+    <li class="dropdown" (click)="isDropdownOpen = !isDropdownOpen">
+      <input type="checkbox" id="userDropdownToggle" class="dropdown-toggle" [ngModel]="isDropdownOpen">
+        <label for="userDropdownToggle" class="dropdown-label">
+          <span class="nav-icon">
+            <i class="fa-solid fa-user-gear"></i>
+          </span>
+        </label>
+      <div class="dropdown-menu">
+        <a routerLink="/account-settings"><i class="fa-solid fa-gear"></i> Settings</a>
+        <button class="dropdown-item" (click)="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+      </div>
+    </li>
+  </ul>
+</nav>
+  
+  <nav id="navbarV">
+    <ul class="leftnavText">
+      <li><a href="/admin/dashboard">Dashboard</a></li>
+      <li><a href="/admin/user-management">User Management</a></li>
+      <li><a href="/admin/reviewer-management">Reviewer Management</a></li>
+      <li><a href="/admin/journal-management">Journal Management</a></li>
+      <li><a href="/admin/rubric-management">Rubric Management</a></li>
+    </ul>
+  </nav>
+
+<div id="container">
+    <h1>Create Reviewer Account</h1>
+    <form (submit)="register()" class="formDesign">
+        <label for="email">Email: </label>
+        <input type="text" name="email" [(ngModel)]="email" placeholder="Enter your email" required>
+        <label for="fName">First Name: </label>
+        <input type="text" name="fName" [(ngModel)]="firstName" placeholder="Enter your first name" required>
+        <label for="lName">Last Name: </label>
+        <input type="text" name="lName" [(ngModel)]="lastName" placeholder="Enter your last name" required>
+        <label for="password">Password: </label>
+        <input type="password" name="password" [(ngModel)]="password" placeholder="Enter your password" required>
+        <input type="submit" value="Register">
+    </form>
+</div>

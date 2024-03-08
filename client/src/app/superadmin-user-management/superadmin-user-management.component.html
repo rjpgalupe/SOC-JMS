@@ -1,0 +1,89 @@
+<nav id="navbarH">
+  <ul class="rightnavText">
+    <li>
+      <a href="#" class="active">
+        <span class="nav-icon">
+          <i class="fa-solid fa-bell"></i>
+        </span>
+      </a>
+    </li>
+    <li class="dropdown" (click)="isDropdownOpen = !isDropdownOpen">
+      <input type="checkbox" id="userDropdownToggle" class="dropdown-toggle" [ngModel]="isDropdownOpen">
+        <label for="userDropdownToggle" class="dropdown-label">
+          <span class="nav-icon">
+            <i class="fa-solid fa-user-gear"></i>
+          </span>
+        </label>
+      <div class="dropdown-menu">
+        <a routerLink="/account-settings"><i class="fa-solid fa-gear"></i> Settings</a>
+        <button class="dropdown-item" (click)="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+      </div>
+    </li>
+  </ul>
+</nav>
+
+<nav id="navbarV">
+  <ul class="leftnavText">
+    <img id="dashboardLogo" src="../../assets/soc_logo.png" alt="">
+    <li>
+      <a href="/admin/dashboard">
+        <i id="dashboardIcons" class="fa fa-line-chart" aria-hidden="true"></i>
+        Dashboard
+      </a>
+    </li>
+    <li>
+      <a href="/superadmin/user-management" class="active">
+        <i id="dashboardIcons" class="fa fa-user-group" aria-hidden="true"></i>
+        User
+      </a>
+    </li>
+    <li>
+      <a href="/admin/reviewer-management">
+        <i id="dashboardIcons" class="fa fa-book" aria-hidden="true"></i>
+        Reviewer
+      </a>
+    </li>
+    <li>
+      <a href="/admin/journal-management">
+        <i id="dashboardIcons" class="fa-solid fa-book-open" aria-hidden="true"></i>
+      Journal
+      </a>
+    </li>
+    <li><a href="/admin/rubric-management">
+      <i id="dashboardIcons" class="fa-solid fa-newspaper" aria-hidden="true"></i>
+      Rubric</a></li>
+  </ul>
+</nav>
+
+<div id="container">
+  <div class="table-container">
+    <div class="searchBar">
+      <input type="text" placeholder="Search..." [(ngModel)]="searchQuery" (input)="filterUsers()">
+    </div>
+
+    <button class="createUser" mat-button color="primary"><a href="/user-management/add-accounts">Add User</a></button>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Full Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Options</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of filteredUsers">
+          <td>{{ user.id }}</td>
+          <td>{{ user.firstName }} {{ user.lastName }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.role }}</td>
+          <td>
+            <button (click)="editUser(user)"><i class="fa-solid fa-pen-to-square"></i></button>
+            <button (click)="deleteUser(user.id)"><i class="fa-solid fa-trash-can"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

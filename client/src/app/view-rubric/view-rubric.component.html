@@ -1,0 +1,66 @@
+<!-- <nav id="navbarH">
+  <ul class="rightnavText">
+    <li class="dropdown" (click)="toggleNotifDropdown()">
+        <input type="checkbox" id="notigDropdownToggle" class="dropdown-toggle" [ngModel]="showNotifDropdown">
+        <a>
+          <label for="notifDropdownToggle" class="dropdown-label">
+            <span class="nav-icon">
+              <i class="fa-solid fa-bell">
+                <span class="badge" *ngIf="unreadNotifications.length > 0">{{ unreadNotifications.length }}</span>
+              </i>              
+            </span>
+          </label>
+        </a>
+        <div class="dropdown-content" *ngIf="showNotifDropdown">
+          <div *ngFor="let notification of unreadNotifications">
+            <a>{{ notification.message }}</a>
+          </div>
+        </div>
+      </li>
+    <li class="dropdown" (click)="isDropdownOpen = !isDropdownOpen">
+      <input type="checkbox" id="userDropdownToggle" class="dropdown-toggle" [ngModel]="isDropdownOpen">
+        <label for="userDropdownToggle" class="dropdown-label">
+          <span class="nav-icon">
+            <i class="fa-solid fa-user-gear"></i>
+          </span>
+        </label>
+      <div class="dropdown-menu">
+        <a routerLink="/account-settings"><i class="fa-solid fa-gear"></i> Settings</a>
+        <button class="dropdown-item" (click)="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+      </div>
+    </li>
+  </ul>
+</nav>
+
+
+<nav id="navbarV">
+  <ul class="leftnavText">
+    <li><a href="/admin/dashboard">Dashboard</a></li>
+    <li *ngIf="isAdmin"><a href="/admin/user-management">User Management</a></li>
+    <li *ngIf="isSuperAdmin"><a href="/superadmin/user-management">User Management</a></li>
+    <li><a href="/admin/reviewer-management">Reviewer Management</a></li>
+    <li><a href="/admin/journal-management">Journal Management</a></li>
+    <li><a href="/admin/rubric-management">Rubric Management</a></li>
+  </ul>
+</nav> -->
+
+<div class="rubric-details" *ngIf="rubric">
+    <h2>Rubric Name: {{ rubric.name }}</h2>
+    <p>Rubric Description: {{ rubric.description }}</p>
+  
+    <table>
+      <thead>
+        <tr>
+          <th>Criteria</th>
+          <th *ngFor="let level of rubric.components[0].levels">{{ level.label }} ({{ level.score }})</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let component of rubric.components">
+          <td>{{ component.name }}</td>
+          <td *ngFor="let level of component.levels"> {{level.description}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

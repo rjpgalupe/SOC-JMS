@@ -1,0 +1,51 @@
+<nav id="navbarH">
+  <ul class="rightnavText">
+    <li>
+      <a href="#" class="active">
+        <span class="nav-icon">
+          <i class="fa-solid fa-bell"></i>
+        </span>
+      </a>
+    </li>
+    <li class="dropdown" (click)="isDropdownOpen = !isDropdownOpen">
+      <input type="checkbox" id="userDropdownToggle" class="dropdown-toggle" [ngModel]="isDropdownOpen">
+        <label for="userDropdownToggle" class="dropdown-label">
+          <span class="nav-icon">
+            <i class="fa-solid fa-user-gear"></i>
+          </span>
+        </label>
+      <div class="dropdown-menu">
+        <a routerLink="/account-settings"><i class="fa-solid fa-gear"></i> Settings</a>
+        <button class="dropdown-item" (click)="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+      </div>
+    </li>
+  </ul>
+</nav>
+  
+  <nav id="navbarV">
+    <ul class="leftnavText">
+      <li><a href="/researcher/dashboard">Dashboard</a></li>
+      <li><a href="/researcher/journal-status">Journal Status</a></li>
+    </ul>
+  </nav>
+
+  <div id="container">
+    
+   <!-- journal-submission.component.html -->
+
+    <form (ngSubmit)="submitJournal()" enctype="multipart/form-data">
+      <label for="journalTitle">Manuscript Title:</label>
+      <input type="text" id="journalTitle" name="journalTitle" [(ngModel)]="journalTitle" required>
+    
+      <label for="authors">Author(s):</label>
+      <input type="text" id="authors" name="authors" [(ngModel)]="authors" required>
+    
+      <label for="abstract">Abstract:</label>
+      <textarea id="abstract" name="abstract" [(ngModel)]="abstract" required></textarea>
+    
+      <label for="journalFile">Manuscript File <i class="fa-solid fa-file-pdf"></i>(PDF):</label>
+      <input type="file" id="journalFile" name="journalFile" (change)="onFileSelected($event)" required>
+    
+      <button class="submit">Submit Journal</button>
+    </form>
+  </div>

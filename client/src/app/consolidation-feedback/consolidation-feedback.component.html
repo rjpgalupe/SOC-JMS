@@ -1,0 +1,96 @@
+<nav id="navbarH">
+    <ul class="rightnavText">
+      <li>
+        <a href="#" class="active">
+          <span class="nav-icon">
+            <i class="fa-solid fa-bell"></i>
+          </span>
+        </a>
+      </li>
+      <li class="dropdown">
+        <input type="checkbox" id="userDropdownToggle" class="dropdown-toggle">
+          <label for="userDropdownToggle" class="dropdown-label">
+            <span class="nav-icon">
+              <i class="fa-solid fa-user-gear"></i>
+            </span>
+          </label>
+        <div class="dropdown-menu">
+          <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
+          <button class="dropdown-item" (click)="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+        </div>
+      </li>
+    </ul>
+  </nav>
+    
+  <nav id="navbarV">
+    <ul class="leftnavText">
+      <img id="dashboardLogo" src="../../assets/soc_logo.png" alt="">
+      <li>
+        <a href="/admin/dashboard">
+          <i id="dashboardIcons" class="fa fa-line-chart" aria-hidden="true"></i>
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <a href="/admin/user-management">
+          <i id="dashboardIcons" class="fa-solid fa-user-group" aria-hidden="true"></i>
+          User
+        </a>
+      </li>
+      <li>
+        <a href="/admin/reviewer-management">
+          <i id="dashboardIcons" class="fa fa-book" aria-hidden="true"></i>
+          Reviewer
+        </a>
+      </li>
+      <li>
+        <a href="/admin/journal-management">
+          <i id="dashboardIcons" class="fa-solid fa-book-open" aria-hidden="true"></i>
+        Journal
+        </a>
+      </li>
+      <li><a href="/admin/rubric-management" class="active">
+        <i id="dashboardIcons" class="fa-solid fa-newspaper" aria-hidden="true"></i>
+        Rubric</a></li>
+    </ul>
+  </nav>
+    
+    <div id="container">
+        <div *ngIf="feedback">
+            <h2>Feedbacks for {{ journalTitle }}</h2>
+            <div *ngFor="let item of feedback">
+              <div>
+                <strong>Reviewer:</strong> {{ item.reviewer }}
+              </div>
+              <div>
+                <strong>Feedback:</strong> {{ item.feedback }}
+              </div>
+              <div>
+                <strong>Choice:</strong> {{ item.choice }}
+              </div>
+              <hr>
+            </div>
+        </div>
+        
+        <div>
+            <h2>Consolidate Feedback</h2>
+            <textarea [(ngModel)]="consolidatedFeedback" placeholder="Enter consolidated feedback"></textarea>
+            <div class="choices">
+              <label class="choice">
+                <input type="radio" name="adminChoice" value="Accepted" [(ngModel)]="adminChoice">
+                Accept
+              </label>
+              <label class="choice">
+                <input type="radio" name="adminChoice" value="Needs Revision" [(ngModel)]="adminChoice">
+                Need Revision
+              </label>
+              <label class="choice">
+                <input type="radio" name="adminChoice" value="Rejected" [(ngModel)]="adminChoice">
+                Reject
+              </label>
+            </div>
+            <button (click)="submitConsolidatedFeedback()">Submit Consolidated Feedback</button>
+        </div>
+    </div>
+    
+    

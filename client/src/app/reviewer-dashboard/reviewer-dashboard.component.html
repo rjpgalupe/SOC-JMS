@@ -1,0 +1,112 @@
+<nav id="navbarH">
+    <ul class="rightnavText">
+      <li class="dropdown" (click)="toggleNotifDropdown()">
+        <input type="checkbox" id="notigDropdownToggle" class="dropdown-toggle" [ngModel]="showNotifDropdown">
+        <a>
+          <label for="notifDropdownToggle" class="dropdown-label">
+            <span class="nav-icon">
+              <i class="fa-solid fa-bell">
+                <span class="badge" *ngIf="unreadNotifications.length > 0">{{ unreadNotifications.length }}</span>
+              </i>              
+            </span>
+          </label>
+        </a>
+        <div class="dropdown-content" *ngIf="showNotifDropdown">
+          <div *ngFor="let notification of notifications">
+            <a [ngClass]="{ 'unread': notification.status === 'unread', 'read': notification.status === 'read' }" 
+                (click)="markNotificationAsRead(notification); viewJournal(notification.journalId)">
+                <i *ngIf="notification.status === 'unread'" class="fa-solid fa-envelope"></i>
+                <i *ngIf="notification.status === 'read'" class="fa-solid fa-envelope-open"></i>
+                {{ notification.message }}
+            </a>
+          </div>
+        </div>      
+      </li>
+      <li class="dropdown" (click)="toggleDropdown()">
+        <input type="checkbox" id="userDropdownToggle" class="dropdown-toggle" [ngModel]="isDropdownOpen">
+          <label for="userDropdownToggle" class="dropdown-label">
+            <span class="nav-icon">
+              <i class="fa-solid fa-user-gear"></i>
+            </span>
+          </label>
+      <div class="dropdown-menu">
+        <a routerLink="/account-settings"><i class="fa-solid fa-gear"></i> Settings</a>
+        <button class="dropdown-item" (click)="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+      </div>
+      </li>
+    </ul>
+  </nav>
+  
+  <nav id="navbarV">
+    <ul class="leftnavText">
+      <img id="dashboardLogo" src="../../assets/soc_logo.png" alt="">
+      <li>
+        <a href="/reviewer/dashboard" class="active">
+          <i id="dashboardIcons" class="fa fa-line-chart" aria-hidden="true"></i>
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <a href="/reviewer/assigned-journals">
+          <i id="dashboardIcons" class="fa-solid fa-book-open" aria-hidden="true"></i>
+        Journal
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+
+<!-- <div class="containerBox">
+    <div id="container">
+      <div class="box">
+        <a href="#">View Submitted Journal
+        </a>
+      </div>
+    
+    <div class="box"><a href="#">View Journal Status
+    </a></div>
+  
+  </div>
+  <div id="container">
+    <div class="box"><a href="#">View Reviewers</a></div>
+    <div class="box"><a href="#">View Published Journal</a></div>
+  </div>
+  </div> -->
+
+  <div class="containerBox">
+    <div id="dashboardHeader">
+      <h1>Dashboard</h1>
+      <hr>
+    </div>
+    <div id="container">
+      <div class="box">
+        <a href="/reviewer/assigned-journals">
+          <span class="icon"><i class="fa-solid fa-book"></i></span>
+          <span class="text">View Assigned Journals</span>
+        </a>
+      </div>
+    
+      <!-- <div class="box">
+        <a href="#">
+          <span class="icon"><i class="fa-solid fa-book-open"></i></span>
+          <span class="text">View Journal Status</span>
+        </a>
+      </div>
+  
+      <div class="box">
+        <a href="#">
+          <span class="icon"><i class="fa-solid fa-address-card"></i></span>
+          <span class="text">View Reviewers</span>
+        </a>
+      </div> -->
+    
+      <div class="box">
+        <a href="#">
+          <span class="icon"><i class="fa-solid fa-newspaper"></i></span>
+          <span class="text">View Published Journal</span>
+        </a>
+      </div>
+  
+    </div>
+  </div>
+  

@@ -1,0 +1,119 @@
+<nav id="navbarH">
+    <ul class="rightnavText">
+      <li class="dropdown" (click)="toggleNotifDropdown()">
+          <input type="checkbox" id="notigDropdownToggle" class="dropdown-toggle" [ngModel]="showNotifDropdown">
+          <a>
+            <label for="notifDropdownToggle" class="dropdown-label">
+              <span class="nav-icon">
+                <i class="fa-solid fa-bell">
+                  <span class="badge" *ngIf="unreadNotifications.length > 0">{{ unreadNotifications.length }}</span>
+                </i>              
+              </span>
+            </label>
+          </a>
+          <div class="dropdown-content" *ngIf="showNotifDropdown">
+            <div *ngFor="let notification of unreadNotifications">
+              <a>{{ notification.message }}</a>
+            </div>
+          </div>
+        </li>
+      <li class="dropdown" (click)="isDropdownOpen = !isDropdownOpen">
+        <input type="checkbox" id="userDropdownToggle" class="dropdown-toggle" [ngModel]="isDropdownOpen">
+          <label for="userDropdownToggle" class="dropdown-label">
+            <span class="nav-icon">
+              <i class="fa-solid fa-user-gear"></i>
+            </span>
+          </label>
+        <div class="dropdown-menu">
+          <a routerLink="/account-settings"><i class="fa-solid fa-gear"></i> Settings</a>
+          <button class="dropdown-item" (click)="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+        </div>
+      </li>
+    </ul>
+  </nav>
+  
+  
+  <nav id="navbarV">
+    <ul class="leftnavText">
+      <img id="dashboardLogo" src="../../assets/soc_logo.png" alt="">
+      <li>
+        <a href="/admin/dashboard">
+          <i id="dashboardIcons" class="fa fa-line-chart" aria-hidden="true"></i>
+          Dashboard
+        </a>
+      </li>
+      <li *ngIf="isAdmin">
+        <a href="/admin/user-management">
+          <i id="dashboardIcons" class="fa-solid fa-user-group" aria-hidden="true"></i>
+          User
+        </a>
+      </li>
+      <li *ngIf="isSuperAdmin">
+        <a href="/superadmin/user-management">
+          <i id="dashboardIcons" class="fa-solid fa-user-group" aria-hidden="true"></i>
+          User
+        </a>
+      </li>
+      <li>
+        <a href="/admin/reviewer-management">
+          <i id="dashboardIcons" class="fa fa-book" aria-hidden="true"></i>
+          Reviewer
+        </a>
+      </li>
+      <li>
+        <a href="/admin/journal-management">
+          <i id="dashboardIcons" class="fa-solid fa-book-open" aria-hidden="true"></i>
+        Journal
+        </a>
+      </li>
+      <li><a href="/admin/rubric-management" class="active">
+        <i id="dashboardIcons" class="fa-solid fa-newspaper" aria-hidden="true"></i>
+        Rubric</a></li>
+    </ul>
+  </nav>
+
+<div class="container">
+    <h1>Create New Rubric</h1>
+    <form (ngSubmit)="saveRubric()">
+        <div class="form-group">
+            <label for="rubric-name">Rubric Name<span class="text-danger">*</span></label>
+            <input id="rubric-name" type="text" class="form-control" [(ngModel)]="rubric.name" name="rubricName" required>
+        </div>
+        <div class="form-group">
+            <label for="rubric-description">Rubric Description</label>
+            <textarea id="rubric-description" class="form-control" [(ngModel)]="rubric.description" name="rubricDescription"></textarea>
+        </div>
+  
+        <!-- Rubric Components -->
+        <div *ngFor="let component of rubric.components; let i = index" class="form-group">
+            <label for="componentName{{i}}">Criteria Name<span class="text-danger">*</span></label>
+            <input id="componentName{{i}}" type="text" class="form-control" [(ngModel)]="component.name" name="componentName{{i}}" required>
+            <!-- Remove Criteria button -->
+            <button type="button" class="removeCriteriabtn" (click)="removeComponent(i)">Remove Criteria</button>
+            
+            <!-- Component Levels (Scores) -->
+            <div *ngFor="let level of component.levels; let j = index" class="form-group">
+                <label for="levelLabel{{i}}-{{j}}">Score Label<span class="text-danger">*</span></label>
+                <input id="levelLabel{{i}}-{{j}}" type="text" class="form-control" [(ngModel)]="level.label" name="levelLabel{{i}}-{{j}}" required>
+  
+                <label for="levelScore{{i}}-{{j}}">Score Value<span class="text-danger">*</span></label>
+                <input id="levelScore{{i}}-{{j}}" type="number" class="form-control" [(ngModel)]="level.score" name="levelScore{{i}}-{{j}}" required>
+
+                <label for="levelDescription{{i}}-{{j}}">Score Description</label>
+                <textarea id="levelDescription{{i}}-{{j}}" class="form-control" [(ngModel)]="level.description" name="levelDescription{{i}}-{{j}}"></textarea>
+  
+                <!-- Buttons for removing levels -->
+                <button type="button" class="removeScorebtn" (click)="removeScore(i, j)">Remove Score</button>
+            </div>
+  
+            <!-- Button for adding levels -->
+            <button type="button" class="addScorebtn" (click)="addScore(i)">Add Score</button>
+        </div>
+  
+        <!-- Button for adding components -->
+        <button type="button" class="addCriteriabtn" (click)="addComponent()">Add Criteria</button>
+        <br/>
+        <button type="submit" class="savebtn">Save Rubric</button>
+    </form>
+  </div>
+  

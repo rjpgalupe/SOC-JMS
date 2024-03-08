@@ -1,0 +1,82 @@
+<nav id="navbarH">
+    <ul class="rightnavText">
+      <li class="dropdown" (click)="toggleNotifDropdown()">
+        <input type="checkbox" id="notigDropdownToggle" class="dropdown-toggle" [ngModel]="showNotifDropdown">
+        <a>
+          <label for="notifDropdownToggle" class="dropdown-label">
+            <span class="nav-icon">
+              <i class="fa-solid fa-bell">
+                <span class="badge" *ngIf="unreadNotifications.length > 0">{{ unreadNotifications.length }}</span>
+              </i>              
+            </span>
+          </label>
+        </a>
+        <div class="dropdown-content" *ngIf="showNotifDropdown">
+          <div *ngFor="let notification of notifications">
+            <a [ngClass]="{ 'unread': notification.status === 'unread', 'read': notification.status === 'read' }" 
+                (click)="markNotificationAsRead(notification); viewJournal(notification.journalId)">
+                <i *ngIf="notification.status === 'unread'" class="fa-solid fa-envelope"></i>
+                <i *ngIf="notification.status === 'read'" class="fa-solid fa-envelope-open"></i>
+                {{ notification.message }}
+            </a>
+          </div>
+        </div>      
+      </li>
+      <li class="dropdown" (click)="toggleDropdown()">
+        <input type="checkbox" id="userDropdownToggle" class="dropdown-toggle" [ngModel]="isDropdownOpen">
+          <label for="userDropdownToggle" class="dropdown-label">
+            <span class="nav-icon">
+              <i class="fa-solid fa-user-gear"></i>
+            </span>
+          </label>
+      <div class="dropdown-menu">
+        <a routerLink="/account-settings"><i class="fa-solid fa-gear"></i> Settings</a>
+        <button class="dropdown-item" (click)="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+      </div>
+      </li>
+    </ul>
+  </nav>
+  
+  <nav id="navbarV">
+    <ul class="leftnavText">
+      <li><a href="/reviewer/dashboard">Dashboard</a></li>
+      <li><a href="/reviewer/assigned-journals">Journal Assigned</a></li>
+    </ul>
+  </nav>
+
+  <div id="container">
+    <div class="reviewContainer" *ngIf="journal">
+        <h2>Manuscript Title: {{ journal.journalTitle }}</h2>
+        <p>Author: {{ journal.authors.join(', ') }}</p>
+        <p>Abstract: {{ journal.abstract }}</p>
+        <a class="download" [href]="'http://localhost:3000/' + journal.filePath" target="_blank"><i class="fa-solid fa-file-pdf"></i>Download</a>
+        <div id="textarea">
+          <textarea [value]="feedback" (input)="updateFeedback($event)" placeholder="Enter your feedback"></textarea>
+
+
+        </div>
+        <div class="choices">
+          <label class="choice">
+            <input type="radio" name="choice" value="approve" style="display: none;">
+            <span class="custom-radio" (click)="updateChoice('approve')"></span>
+            Approve
+          </label>
+          <label class="choice">
+            <input type="radio" name="choice" value="needs revision" style="display: none;">
+            <span class="custom-radio" (click)="updateChoice('needs revision')"></span>
+            Need Revision
+          </label>
+          <label class="choice">
+            <input type="radio" name="choice" value="reject" style="display: none;">
+            <span class="custom-radio" (click)="updateChoice('reject')"></span>
+            Reject
+          </label>
+        </div>        
+          <label>Rubric:<button (click)="openRubric()" class="rubric">Open Rubric</button></label>
+          <div class="feedback">
+            <button (click)="submitFeedback()">Submit Feedback</button>
+          </div>
+    </div>
+  </div>
+  
+  
