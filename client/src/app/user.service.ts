@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:3000'; // Update with your backend base URL
+  private apiUrl = 'https://soc-jms.vercel.app'; // Update with your backend base URL
 
   constructor(private http: HttpClient) { }
   
