@@ -1,0 +1,22 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "client",
+        "use": "@vercel/build",
+        "config": {
+          "buildCommand": "ng build --prod"
+        }
+      },
+      {
+        "src": "server.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.)",
+        "dest": "/index.html"
+      }
+    ]
+  }
