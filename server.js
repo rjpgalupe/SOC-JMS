@@ -28,6 +28,8 @@ app.use((req, res, next) => {
     next(); 
 });
 
+app.use(express.static("frontend"));
+
 // Retrieve all users or users by role
 app.get('/users', async (req, res) => {
   try {
