@@ -19,7 +19,7 @@ export class ReviewerDashboardComponent implements OnInit {
     // Fetch unread notifications for the current user
     const userId = sessionStorage.getItem('userId');
     if (userId) {
-      this.http.get<any[]>(`https://soc-jms.vercel.app/notifications/${userId}`).subscribe(
+      this.http.get<any[]>(`https://jmshau.site/notifications/${userId}`).subscribe(
         (data) => {
             this.notifications = data; // Store all notifications
             this.unreadNotifications = data.filter(notification => notification.status === 'unread'); // Filter unread notifications
@@ -59,7 +59,7 @@ viewJournal(journalId: string) {
 markNotificationAsRead(notification: any) {
   // Update the notification as read in the backend
   const notificationId = notification._id;
-  this.http.put(`https://soc-jms.vercel.app/notifications/${notificationId}/mark-as-read`, {}).subscribe(
+  this.http.put(`https://jmshau.site/notifications/${notificationId}/mark-as-read`, {}).subscribe(
       (response) => {
           console.log('Notification marked as read:', response);
           // Update the read status of the notification locally

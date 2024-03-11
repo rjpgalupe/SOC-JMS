@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class JournalService {
 
-  private apiUrl = 'https://soc-jms.vercel.app'; // Update with your backend base URL
+  private apiUrl = 'https://jmshau.site'; // Update with your backend base URL
 
   constructor(private http: HttpClient) { }
 

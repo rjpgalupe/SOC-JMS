@@ -21,7 +21,7 @@ app.use('/uploads', express.static('uploads'));
 
 app.use((req, res, next) => { 
     res.header("Access-Control-Allow-Origin",  
-               "http://localhost:4200", "https://soc-jms.vercel.app"); 
+               "http://localhost:4200", "https://jmshau.site"); 
     res.header("Access-Control-Allow-Headers",  
                "Origin, X-Requested-With, Content-Type, Accept");
     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
@@ -213,9 +213,9 @@ app.post('/register', async (req, res) => {
       subject: 'Email Verification',
       html: `<p>Hello ${firstName},</p>
          <p>Please click the following link to verify your email address:</p>
-         <p><a href="https://soc-jms.vercel.app/verify/${verificationToken}?email=${email}" target="_blank">Verify Email</a></p>
+         <p><a href="https://jmshau.site/verify/${verificationToken}?email=${email}" target="_blank">Verify Email</a></p>
          <p>If the button above doesn't work, you can also paste this link into your browser:</p>
-         <p>https://soc-jms.vercel.app/verify/${verificationToken}?email=${email}</p>
+         <p>https://jmshau.site/verify/${verificationToken}?email=${email}</p>
          <p>The link is valid for 10 minutes</p>`
     };
 
@@ -286,9 +286,9 @@ app.post('/resend-verification-email', async (req, res) => {
       subject: 'Email Verification',
       html: `<p>Hello ${user.firstName},</p>
          <p>Please click the following link to verify your email address:</p>
-         <p><a href="https://soc-jms.vercel.app/verify/${verificationToken}?email=${email}" target="_blank">Verify Email</a></p>
+         <p><a href="https://jmshau.site/verify/${verificationToken}?email=${email}" target="_blank">Verify Email</a></p>
          <p>If the button above doesn't work, you can also paste this link into your browser:</p>
-         <p>https://soc-jms.vercel.app/verify/${verificationToken}?email=${email}</p>
+         <p>https://jmshau.site/verify/${verificationToken}?email=${email}</p>
          <p>The link is valid for 10 minutes</p>`
     };
 
