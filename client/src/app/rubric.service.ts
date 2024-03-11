@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class RubricService {
-  private apiUrl = 'https://jmshau.site'; // Update with your API endpoint
+  private apiUrl = 'https://jms-backend-testing.vercel.app/'; // Update with your API endpoint
 
   constructor(private http: HttpClient) { }
 

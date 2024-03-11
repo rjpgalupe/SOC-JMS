@@ -25,6 +25,7 @@ body {
 }
 
 .dropdown-content {
+  cursor: pointer;
   display: block;
 }
 
@@ -132,9 +133,20 @@ body {
   transition: color 0.3s ease;
 }
 
+
 .rightnavText li {
   display: inline-block;
   margin-right: 1rem;
+}
+
+#dashboardHeader {
+  margin-top: 5rem;
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+hr {
+  width: 90%;
 }
 
 #dashboardLogo {
@@ -209,26 +221,6 @@ li a {
   text-align: center;
   padding: 1rem 1rem 0rem 1rem;
   text-decoration: none;
-}
-
-@media screen and (max-width: 400px) {
-  nav#navbarH {
-    float: none;
-    display: inline-block;
-    width: 100%;
-  }
-
-  ul {
-    float: none;
-    display: block;
-    width: 100%;
-  }
-
-  li {
-    float: none;
-    display: block;
-    width: 100%;
-  }
 }
 
 #container {

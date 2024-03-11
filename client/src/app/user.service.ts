@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'https://jmshau.site'; // Update with your backend base URL
+  private apiUrl = 'https://jms-backend-testing.vercel.app/'; // Update with your backend base URL
 
   constructor(private http: HttpClient) { }
   

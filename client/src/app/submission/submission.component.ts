@@ -43,7 +43,7 @@ export class SubmissionComponent {
       formData.append('journalFile', this.selectedFile, this.selectedFile.name);
     }
   
-    this.http.post<any>('https://jmshau.site/journals', formData).subscribe(
+    this.http.post<any>('https://jms-backend-testing.vercel.app/journals', formData).subscribe(
       (response) => {
         console.log(response.message);
         // Reset form fields after successful submission

@@ -247,6 +247,10 @@ li a {
   font-size: 1.5rem;
 }
 
+.actionButton button i.fa-comment-dots {
+  color: #424242;
+}
+
 .actionButton button i.fa-user-pen,
 .actionButton button i.fa-pen-to-square {
   color: #000;
@@ -254,6 +258,10 @@ li a {
 
 .actionButton button i.fa-trash-can {
   color: #ff0000;
+}
+
+.actionButton button:hover i.fa-comment-dots {
+  color: #c8691c;
 }
 
 .actionButton button:hover i.fa-user-pen {

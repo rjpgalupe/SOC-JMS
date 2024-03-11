@@ -39,8 +39,19 @@
   
   <nav id="navbarV">
     <ul class="leftnavText">
-      <li><a href="/reviewer/dashboard">Dashboard</a></li>
-      <li><a href="/reviewer/assigned-journals">Journal Assigned</a></li>
+      <img id="dashboardLogo" src="../../assets/soc_logo.png" alt="">
+      <li>
+        <a href="/reviewer/dashboard">
+          <i id="dashboardIcons" class="fa fa-line-chart" aria-hidden="true"></i>
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <a href="/reviewer/assigned-journals">
+          <i id="dashboardIcons" class="fa-solid fa-book-open" aria-hidden="true"></i>
+        Journal
+        </a>
+      </li>
     </ul>
   </nav>
 
@@ -49,7 +60,7 @@
         <h2>Manuscript Title: {{ journal.journalTitle }}</h2>
         <p>Author: {{ journal.authors.join(', ') }}</p>
         <p>Abstract: {{ journal.abstract }}</p>
-        <a class="download" [href]="'https://jmshau.site/' + journal.filePath" target="_blank"><i class="fa-solid fa-file-pdf"></i>Download</a>
+        <a class="download" [href]="'https://jms-backend-testing.vercel.app/' + journal.filePath" target="_blank"><i class="fa-solid fa-file-pdf"></i>Download</a>
         <div id="textarea">
           <textarea [value]="feedback" (input)="updateFeedback($event)" placeholder="Enter your feedback"></textarea>
 
@@ -57,18 +68,18 @@
         </div>
         <div class="choices">
           <label class="choice">
-            <input type="radio" name="choice" value="approve" style="display: none;">
-            <span class="custom-radio" (click)="updateChoice('approve')"></span>
+            <input type="radio" name="choice" value="approve" (click)="updateChoice('approve')">
+            <span class="custom-radio"></span>
             Approve
           </label>
           <label class="choice">
-            <input type="radio" name="choice" value="needs revision" style="display: none;">
-            <span class="custom-radio" (click)="updateChoice('needs revision')"></span>
+            <input type="radio" name="choice" value="needs revision" (click)="updateChoice('needs revision')">
+            <span class="custom-radio"></span>
             Need Revision
           </label>
           <label class="choice">
-            <input type="radio" name="choice" value="reject" style="display: none;">
-            <span class="custom-radio" (click)="updateChoice('reject')"></span>
+            <input type="radio" name="choice" value="reject" (click)="updateChoice('reject')">
+            <span class="custom-radio"></span>
             Reject
           </label>
         </div>        

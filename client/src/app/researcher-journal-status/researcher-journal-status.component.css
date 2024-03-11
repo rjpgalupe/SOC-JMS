@@ -95,6 +95,16 @@ body {
   margin-right: 1rem;
 }
 
+#dashboardHeader {
+  margin-top: 5rem;
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+hr {
+  width: 90%;
+}
+
 #dashboardLogo {
   display: flex;
   width: 8rem;
@@ -153,7 +163,6 @@ body {
   margin-bottom: 2rem;
 }
 
-
 ul {
   list-style-type: none;
   margin: 0px 1px 0px 1px;
@@ -168,7 +177,6 @@ li a {
   padding: 1rem 1rem 0rem 1rem;
   text-decoration: none;
 }
-
 
 @media screen and (max-width: 400px) {
   nav#navbarH {
