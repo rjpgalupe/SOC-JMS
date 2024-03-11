@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'https://jms-backend-testing.vercel.app/'; // Update with your backend URL
+  private baseUrl = 'https://jms-backend-testing.vercel.app'; // Update with your backend URL
   private isUserLogged =  new BehaviorSubject<boolean>(false);
   private isUserLogged$ =  this.isUserLogged.asObservable();
   private currentUserRole: string = ''; // Add currentUserRole property
