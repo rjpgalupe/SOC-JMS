@@ -42,15 +42,9 @@
         Dashboard
       </a>
     </li>
-    <li *ngIf="isAdmin">
+    <li>
       <a href="/admin/user-management">
         <i id="dashboardIcons" class="fa-solid fa-user-group" aria-hidden="true"></i>
-        User
-      </a>
-    </li>
-    <li *ngIf="isSuperAdmin">
-      <a href="/superadmin/user-management">
-        <i id="dashboardIcons" class="fa fa-user-group" aria-hidden="true"></i>
         User
       </a>
     </li>
@@ -78,20 +72,12 @@
     <hr>
   </div>
   <div id="container">
-    <div *ngIf="isAdmin" class="box">
+    <div class="box">
       <a href="/admin/user-management">
         <span class="icon"><i class="fa-solid fa-user-group"></i></span>
         <span class="text">View User Management</span>
       </a>
-    </div>
-
-    <div *ngIf="isSuperAdmin" class="box">
-      <a href="/superadmin/user-management">
-        <span class="icon"><i class="fa-solid fa-user-group"></i></span>
-        <span class="text">View User Management</span>
-      </a>
-    </div>
-  
+    </div>  
     <div class="box">
       <a href="/admin/journal-management">
         <span class="icon"><i class="fa-solid fa-book-open"></i></span>
