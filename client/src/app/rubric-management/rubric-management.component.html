@@ -36,37 +36,31 @@
 <nav id="navbarV">
   <ul class="leftnavText">
     <img id="dashboardLogo" src="../../assets/soc_logo.png" alt="">
-    <li>
+    <li *ngIf="isAdmin || isSuperAdmin">
       <a href="/admin/dashboard">
         <i id="dashboardIcons" class="fa fa-line-chart" aria-hidden="true"></i>
         Dashboard
       </a>
     </li>
-    <li *ngIf="isAdmin">
+    <li *ngIf="isAdmin || isSuperAdmin">
       <a href="/admin/user-management">
         <i id="dashboardIcons" class="fa-solid fa-user-group" aria-hidden="true"></i>
         User
       </a>
     </li>
-    <li *ngIf="isSuperAdmin">
-      <a href="/superadmin/user-management">
-        <i id="dashboardIcons" class="fa-solid fa-user-group" aria-hidden="true"></i>
-        User
-      </a>
-    </li>
-    <li>
+    <li *ngIf="isAdmin || isSuperAdmin">
       <a href="/admin/reviewer-management">
         <i id="dashboardIcons" class="fa fa-book" aria-hidden="true"></i>
         Reviewer
       </a>
     </li>
-    <li>
+    <li *ngIf="isAdmin || isSuperAdmin">
       <a href="/admin/journal-management">
         <i id="dashboardIcons" class="fa-solid fa-book-open" aria-hidden="true"></i>
       Journal
       </a>
     </li>
-    <li><a href="/admin/rubric-management" class="active">
+    <li *ngIf="isAdmin || isSuperAdmin"><a href="/admin/rubric-management" class="active">
       <i id="dashboardIcons" class="fa-solid fa-newspaper" aria-hidden="true"></i>
       Rubric</a></li>
   </ul>

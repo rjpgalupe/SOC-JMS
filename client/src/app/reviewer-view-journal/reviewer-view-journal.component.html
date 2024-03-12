@@ -60,7 +60,7 @@
         <h2>Manuscript Title: {{ journal.journalTitle }}</h2>
         <p>Author: {{ journal.authors.join(', ') }}</p>
         <p>Abstract: {{ journal.abstract }}</p>
-        <a class="download" [href]="'https://jms-backend-testing.vercel.app' + journal.filePath" target="_blank"><i class="fa-solid fa-file-pdf"></i>Download</a>
+        <a class="download" [href]="journal.downloadUrl" target="_blank"><i class="fa-solid fa-file-pdf"></i>Download</a>
         <div id="textarea">
           <textarea [value]="feedback" (input)="updateFeedback($event)" placeholder="Enter your feedback"></textarea>
 

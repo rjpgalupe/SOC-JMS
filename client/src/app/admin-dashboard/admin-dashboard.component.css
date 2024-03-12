@@ -223,6 +223,14 @@ li a {
   text-decoration: none;
 }
 
+/* Disable publication page */
+.disabled {
+  pointer-events: none;
+  background-color: gray;
+  text-decoration: none;
+  cursor: not-allowed;
+}
+
 #container {
   display: flex;
   flex-wrap: wrap;

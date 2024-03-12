@@ -13,6 +13,7 @@ import { AuthService } from '../auth.service';
 export class ViewRubricComponent implements OnInit {
   isAdmin: boolean = false;
   isSuperAdmin: boolean = false;
+  isReviewer: boolean = false;
   unreadNotifications: any[] = [];
   showNotifDropdown: boolean = false;
   isDropdownOpen = false;
@@ -30,9 +31,10 @@ export class ViewRubricComponent implements OnInit {
 
     // Retrieve user role from session storage
     const userRole = sessionStorage.getItem('userRole');
-    // Check if the user is an admin or superadmin
+    // Check if the user is an admin, superadmin, or reviewer
     this.isAdmin = userRole === 'admin';
     this.isSuperAdmin = userRole === 'superadmin';
+    this.isReviewer = userRole === 'reviewer';
   }
 
   fetchRubric() {

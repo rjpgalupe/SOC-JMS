@@ -30,19 +30,54 @@
       </div>
     </li>
   </ul>
-</nav>
+</nav> -->
 
 
 <nav id="navbarV">
   <ul class="leftnavText">
-    <li><a href="/admin/dashboard">Dashboard</a></li>
-    <li *ngIf="isAdmin"><a href="/admin/user-management">User Management</a></li>
-    <li *ngIf="isSuperAdmin"><a href="/superadmin/user-management">User Management</a></li>
-    <li><a href="/admin/reviewer-management">Reviewer Management</a></li>
-    <li><a href="/admin/journal-management">Journal Management</a></li>
-    <li><a href="/admin/rubric-management">Rubric Management</a></li>
+    <img id="dashboardLogo" src="../../assets/soc_logo.png" alt="">
+    <li *ngIf="isAdmin || isSuperAdmin">
+      <a href="/admin/dashboard">
+        <i id="dashboardIcons" class="fa fa-line-chart" aria-hidden="true"></i>
+        Dashboard
+      </a>
+    </li>
+    <li *ngIf="isReviewer">
+      <a href="/reviewer/dashboard">
+        <i id="dashboardIcons" class="fa fa-line-chart" aria-hidden="true"></i>
+        Dashboard
+      </a>
+    </li>
+    <li *ngIf="isReviewer">
+      <a href="/reviewer/assigned-journals">
+        <i id="dashboardIcons" class="fa-solid fa-book-open" aria-hidden="true"></i>
+        Journal
+      </a>
+    </li>
+    <li *ngIf="isAdmin || isSuperAdmin">
+      <a href="/admin/user-management">
+        <i id="dashboardIcons" class="fa-solid fa-user-group" aria-hidden="true"></i>
+        User
+      </a>
+    </li>
+    <li *ngIf="isAdmin || isSuperAdmin">
+      <a href="/admin/reviewer-management">
+        <i id="dashboardIcons" class="fa fa-book" aria-hidden="true"></i>
+        Reviewer
+      </a>
+    </li>
+    <li *ngIf="isAdmin || isSuperAdmin">
+      <a href="/admin/journal-management">
+        <i id="dashboardIcons" class="fa-solid fa-book-open" aria-hidden="true"></i>
+      Journal
+      </a>
+    </li>
+    <li *ngIf="isAdmin || isSuperAdmin"><a href="/admin/rubric-management">
+      <i id="dashboardIcons" class="fa-solid fa-newspaper" aria-hidden="true"></i>
+      Rubric</a>
+    </li>
   </ul>
-</nav> -->
+</nav>
 
 <div class="rubric-details" *ngIf="rubric">
     <h2>Rubric Name: {{ rubric.name }}</h2>

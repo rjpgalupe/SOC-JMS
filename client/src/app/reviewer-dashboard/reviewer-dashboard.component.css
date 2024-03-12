@@ -81,7 +81,7 @@ body {
 
 .dropdown-menu button:hover {
   padding: 10px;
-  color: #fff;
+  color: #000;
   background-color: #ff5a00;
 }
 
@@ -235,6 +235,14 @@ li a {
     display: block;
     width: 100%;
   }
+}
+
+/* Disable publication page */
+.disabled {
+  pointer-events: none;
+  background-color: gray;
+  text-decoration: none;
+  cursor: not-allowed;
 }
 
 #container {

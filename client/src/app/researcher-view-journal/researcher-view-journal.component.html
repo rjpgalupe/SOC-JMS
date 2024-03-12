@@ -1,26 +1,41 @@
 <nav id="navbarH">
-    <ul class="rightnavText">
-      <li>
-        <a href="#" class="active">
+  <ul class="rightnavText">
+    <li class="dropdown" (click)="toggleNotifDropdown()">
+      <input type="checkbox" id="notigDropdownToggle" class="dropdown-toggle" [ngModel]="showNotifDropdown">
+      <a>
+        <label for="notifDropdownToggle" class="dropdown-label">
           <span class="nav-icon">
-            <i class="fa-solid fa-bell"></i>
+            <i class="fa-solid fa-bell">
+              <span class="badge" *ngIf="unreadNotifications.length > 0">{{ unreadNotifications.length }}</span>
+            </i>              
           </span>
-        </a>
-      </li>
-      <li class="dropdown">
-        <input type="checkbox" id="userDropdownToggle" class="dropdown-toggle">
-          <label for="userDropdownToggle" class="dropdown-label">
-            <span class="nav-icon">
-              <i class="fa-solid fa-user-gear"></i>
-            </span>
-          </label>
-        <div class="dropdown-menu">
-          <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
-          <button class="dropdown-item" (click)="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+        </label>
+      </a>
+      <div class="dropdown-content" *ngIf="showNotifDropdown">
+        <div *ngFor="let notification of notifications">
+          <a [ngClass]="{ 'unread': notification.status === 'unread', 'read': notification.status === 'read' }" 
+              (click)="markNotificationAsRead(notification); viewJournal(notification.journalId)">
+              <i *ngIf="notification.status === 'unread'" class="fa-solid fa-envelope"></i>
+              <i *ngIf="notification.status === 'read'" class="fa-solid fa-envelope-open"></i>
+              {{ notification.message }}
+          </a>
         </div>
-      </li>
-    </ul>
-  </nav>
+      </div>      
+    </li>
+    <li class="dropdown" (click)="toggleDropdown()">
+      <input type="checkbox" id="userDropdownToggle" class="dropdown-toggle" [ngModel]="isDropdownOpen">
+        <label for="userDropdownToggle" class="dropdown-label">
+          <span class="nav-icon">
+            <i class="fa-solid fa-user-gear"></i>
+          </span>
+        </label>
+    <div class="dropdown-menu">
+      <a routerLink="/account-settings"><i class="fa-solid fa-gear"></i> Settings</a>
+      <button class="dropdown-item" (click)="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+    </li>
+  </ul>
+</nav>
 
   <nav id="navbarV">
     <ul class="leftnavText">
@@ -34,15 +49,16 @@
       <li>
         <a href="/researcher/journal-status">
           <i id="dashboardIcons" class="fa-solid fa-book-open" aria-hidden="true"></i>
-        Journal
+        Manuscript
         </a>
       </li>
     </ul>
   </nav>
 
   <div id="container">
-    <div *ngIf="consolidatedFeedback">
-      <h2>Feedback for {{ journalTitle }}</h2>
+    <div class="feedbackContainer" *ngIf="consolidatedFeedback">
+      <h2>Feedback for: {{ journalTitle }}</h2>
+      <hr>
       <div>
         <strong>Feedback:</strong> {{ consolidatedFeedback }}
       </div>

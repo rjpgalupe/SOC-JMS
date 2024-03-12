@@ -10,13 +10,15 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./submission.component.css']
 })
 export class SubmissionComponent {
+  notifications: any[] = [];
+  unreadNotifications: any[] = [];
+  showNotifDropdown: boolean = false;
+  isDropdownOpen = false;
   journalTitle: string = '';
   authors: string = '';
   abstract: string = '';
   keywords: string = '';
   selectedFile: File | null = null;
-
-  isDropdownOpen = false;
 
   constructor(private http: HttpClient, 
               private authService: AuthService, 
@@ -43,7 +45,7 @@ export class SubmissionComponent {
       formData.append('journalFile', this.selectedFile, this.selectedFile.name);
     }
   
-    this.http.post<any>('https://jms-backend-testing.vercel.app/journals', formData).subscribe(
+    this.http.post<any>('http://localhost:3000/journals', formData).subscribe(
       (response) => {
         console.log(response.message);
         // Reset form fields after successful submission
@@ -61,20 +63,47 @@ export class SubmissionComponent {
     );
   }
 
+  markNotificationAsRead(notification: any) {
+    // Update the notification as read in the backend
+    const notificationId = notification._id;
+    this.http.put(`http://localhost:3000/notifications/${notificationId}/mark-as-read`, {}).subscribe(
+        (response) => {
+            console.log('Notification marked as read:', response);
+            // Update the read status of the notification locally
+            notification.Status = 'read';
+            // Remove the notification from the unreadNotifications array
+            this.unreadNotifications = this.unreadNotifications.filter(n => n._id !== notificationId);
+        },
+        (error) => {
+            console.error('Error marking notification as read:', error);
+        }
+    );
+  }
+
+  viewJournal(journalId: string) {
+    this.router.navigate(['/researcher/journal-status', journalId]);
+  }
+
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
   }
 
-  logout() {
-    this.authService.setIsUserLogged(false);
-    this.authService.clearUserId();
-    this.router.navigate(['login'])
+    logout() {
+      this.authService.setIsUserLogged(false);
+      this.authService.clearUserId();
+      this.router.navigate(['login'])
     } 
 
-    toggleDropdown() {
+    toggleDropdown(){
       this.isDropdownOpen = !this.isDropdownOpen;
+      this.showNotifDropdown = false;
     }
-
+  
+    toggleNotifDropdown(){
+      this.showNotifDropdown = !this.showNotifDropdown;
+      this.isDropdownOpen = false;
+    }
+    
     @HostListener('document:click', ['$event'])
     onDocumentClick(event: MouseEvent) {
     const target = event.target as HTMLElement;

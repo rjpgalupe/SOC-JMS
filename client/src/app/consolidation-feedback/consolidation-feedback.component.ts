@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { JournalService } from '../journal.service';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-consolidation-feedback',
@@ -10,6 +12,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./consolidation-feedback.component.css']
 })
 export class ConsolidationFeedbackComponent implements OnInit {
+  unreadNotifications: any[] = [];
+  showNotifDropdown: boolean = false;
+  isDropdownOpen = false;
   journalId: string = ''; 
   feedback: any[] = []; 
   consolidatedFeedback: string = ''; 
@@ -17,7 +22,31 @@ export class ConsolidationFeedbackComponent implements OnInit {
   journalTitle: string = '';
   
 
-  constructor(private route: ActivatedRoute, private journalService: JournalService, private authService: AuthService, private router: Router) { }
+  constructor(private route: ActivatedRoute, 
+              private journalService: JournalService, 
+              private authService: AuthService, 
+              private router: Router,
+              private snackBar: MatSnackBar) { }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+  const target = event.target as HTMLElement;
+
+  // Check if the click is inside the dropdown toggle button
+  if (target.matches('.dropdown-toggle')) {
+    this.toggleDropdown(); // Toggle the dropdown
+  } else {
+    // Check if the click is outside the dropdown
+    const dropdownContainer = target.closest('.dropdown');
+    if (!dropdownContainer && this.isDropdownOpen) {
+      this.isDropdownOpen = false;
+    }
+    const notifDropdown = target.closest('.dropdown');
+    if (!notifDropdown && this.showNotifDropdown) {
+      this.showNotifDropdown = false;
+    }
+  }
+}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -70,9 +99,20 @@ export class ConsolidationFeedbackComponent implements OnInit {
         },
         (error) => {
           console.error(error);
+          this.snackBar.open('Submit Feedback failed!', 'Close', { duration: 3000, verticalPosition: 'top'});
           // Handle error scenario
         }
       );
+  }
+
+  toggleDropdown(){
+    this.isDropdownOpen = !this.isDropdownOpen;
+    this.showNotifDropdown = false;
+  }
+
+  toggleNotifDropdown(){
+    this.showNotifDropdown = !this.showNotifDropdown;
+    this.isDropdownOpen = false;
   }
 
   logout() {

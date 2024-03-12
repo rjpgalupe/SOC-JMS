@@ -42,7 +42,7 @@ body {
 
 .dropdown-menu button:hover {
   padding: 10px;
-  color: #fff;
+  color: #000;
   background-color: #ff5a00;
 }
 
@@ -50,12 +50,10 @@ body {
   width: 100%;
 }
 
-/* Adjusted styles to show the menu when the checkbox is checked */
 .dropdown-toggle:checked + .dropdown-label + .dropdown-menu {
   display: block;
 }
 
-/* Hide checkbox visually but keep it accessible for screen readers */
 .dropdown-toggle {
   position: absolute;
   opacity: 0;
@@ -209,5 +207,25 @@ li a {
     justify-content: center;
     align-items: center;
     padding-top: 8rem;
+  }
+
+  .feedbackContainer {
+    font-size: 20px;
+    width: 80%;
+    max-width: 800px;
+    line-height: 2;
+    background-color: #fecb98;
+    margin-left: 200px;
+    margin-top: 80px;
+    padding: 30px;
+  }
+
+  h2 {
+    font-size: 25px;
+  }
+
+  hr{
+    width: 750px;
+    padding: 10px;
   }
   
