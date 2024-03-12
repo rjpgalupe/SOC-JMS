@@ -202,7 +202,6 @@ hr {
   margin-bottom: 2rem;
 }
 
-
 ul {
   list-style-type: none;
   margin: 0px 1px 0px 1px;
@@ -278,7 +277,21 @@ textarea {
   background-color: #ff5a00;
 }
 
+label button {
+  width: 100px;
+  margin-top: 25px;
+  color: #fff;
+  padding: 1px;
+  border-radius: 10px;
+  background-color: #ff5a00;
+}
+
 .download:hover {
+  color: #000;
+  background-color: #ff914d;
+}
+
+label button:hover {
   color: #000;
   background-color: #ff914d;
 }

@@ -1,6 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -9,14 +10,44 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./researcher-dashboard.component.css']
 })
 export class ResearcherDashboardComponent {
-  constructor(private authService: AuthService, private router: Router) {}
+  notifications: any[] = [];
+  unreadNotifications: any[] = [];
+  showNotifDropdown: boolean = false;
   isDropdownOpen = false;
 
-  logout() {
-    this.authService.setIsUserLogged(false);
-    this.authService.clearUserId();
-    this.router.navigate(['login'])
+  constructor(private authService: AuthService, private router: Router, private http: HttpClient,) {}
+
+  markNotificationAsRead(notification: any) {
+    // Update the notification as read in the backend
+    const notificationId = notification._id;
+    this.http.put(`http://localhost:3000/notifications/${notificationId}/mark-as-read`, {}).subscribe(
+        (response) => {
+            console.log('Notification marked as read:', response);
+            // Update the read status of the notification locally
+            notification.Status = 'read';
+            // Remove the notification from the unreadNotifications array
+            this.unreadNotifications = this.unreadNotifications.filter(n => n._id !== notificationId);
+        },
+        (error) => {
+            console.error('Error marking notification as read:', error);
+        }
+    );
+  }
+
+    viewJournal(journalId: string): void {
+      this.router.navigate(['/researcher/view-journal', journalId]);
+    }
+
+    logout() {
+      this.authService.setIsUserLogged(false);
+      this.authService.clearUserId();
+      this.router.navigate(['login'])
     } 
+
+    toggleNotifDropdown(){
+      this.showNotifDropdown = !this.showNotifDropdown;
+      this.isDropdownOpen = false;
+    }
 
     toggleDropdown() {
       this.isDropdownOpen = !this.isDropdownOpen;
