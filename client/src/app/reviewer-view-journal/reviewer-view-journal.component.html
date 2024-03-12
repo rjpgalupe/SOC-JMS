@@ -63,8 +63,6 @@
         <a class="download" [href]="journal.downloadUrl" target="_blank"><i class="fa-solid fa-file-pdf"></i>Download</a>
         <div id="textarea">
           <textarea [value]="feedback" (input)="updateFeedback($event)" placeholder="Enter your feedback"></textarea>
-
-
         </div>
         <div class="choices">
           <label class="choice">
@@ -83,10 +81,10 @@
             Reject
           </label>
         </div>        
-          <label>Rubric:<button (click)="openRubric()" class="rubric">Open Rubric</button></label>
-          <div class="feedback">
-            <button (click)="submitFeedback()">Submit Feedback</button>
-          </div>
+        <label>Rubric: <button (click)="openRubric()" class="rubric">Open Rubric</button></label>
+        <div class="feedback">
+          <button (click)="submitFeedback()">Submit Feedback</button>
+        </div>
     </div>
   </div>
   
