@@ -45,7 +45,7 @@ export class SubmissionComponent {
       formData.append('journalFile', this.selectedFile, this.selectedFile.name);
     }
   
-    this.http.post<any>('http://localhost:3000/journals', formData).subscribe(
+    this.http.post<any>('https://jms-backend-testing.vercel.app/journals', formData).subscribe(
       (response) => {
         console.log(response.message);
         // Reset form fields after successful submission
@@ -66,7 +66,7 @@ export class SubmissionComponent {
   markNotificationAsRead(notification: any) {
     // Update the notification as read in the backend
     const notificationId = notification._id;
-    this.http.put(`http://localhost:3000/notifications/${notificationId}/mark-as-read`, {}).subscribe(
+    this.http.put(`https://jms-backend-testing.vercel.app/notifications/${notificationId}/mark-as-read`, {}).subscribe(
         (response) => {
             console.log('Notification marked as read:', response);
             // Update the read status of the notification locally

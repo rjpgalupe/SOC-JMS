@@ -20,7 +20,7 @@ export class ResearcherDashboardComponent {
   markNotificationAsRead(notification: any) {
     // Update the notification as read in the backend
     const notificationId = notification._id;
-    this.http.put(`http://localhost:3000/notifications/${notificationId}/mark-as-read`, {}).subscribe(
+    this.http.put(`https://jms-backend-testing.vercel.app/notifications/${notificationId}/mark-as-read`, {}).subscribe(
         (response) => {
             console.log('Notification marked as read:', response);
             // Update the read status of the notification locally
