@@ -26,15 +26,6 @@ export class ReviewerManagementComponent {
               private journalService: JournalService,
               private snackBar: MatSnackBar ) {}
 
-  toggleDropdown(){
-    this.isDropdownOpen = !this.isDropdownOpen;
-    this.showNotifDropdown = false;
-  }
-
-  toggleNotifDropdown(){
-    this.showNotifDropdown = !this.showNotifDropdown;
-    this.isDropdownOpen = false;
-  }
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
@@ -150,8 +141,21 @@ loadAssignedJournals(): void {
     }
   }
   
-   logout() {
+  logout() {
+    this.snackBar.open('Logout successful.', 'Close', { duration: 3000, verticalPosition: 'top'});
     this.authService.setIsUserLogged(false);
+    this.authService.clearUserId();
     this.router.navigate(['login'])
-    } 
+  } 
+
+  toggleDropdown(){
+    this.isDropdownOpen = !this.isDropdownOpen;
+    this.showNotifDropdown = false;
+  }
+
+  toggleNotifDropdown(){
+    this.showNotifDropdown = !this.showNotifDropdown;
+    this.isDropdownOpen = false;
+  }
+  
 }

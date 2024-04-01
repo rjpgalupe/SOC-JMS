@@ -25,6 +25,22 @@ export class SubmissionComponent {
               private router: Router,
               private snackBar: MatSnackBar) {}
 
+      @HostListener('document:click', ['$event'])
+    onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+
+    // Check if the click is inside the dropdown toggle button
+    if (target.matches('.dropdown-toggle')) {
+      this.toggleDropdown(); // Toggle the dropdown
+    } else {
+      // Check if the click is outside the dropdown
+      const dropdownContainer = target.closest('.dropdown');
+      if (!dropdownContainer && this.isDropdownOpen) {
+        this.isDropdownOpen = false;
+      }
+    }
+  }            
+
   submitJournal() {
     const formData = new FormData();
     formData.append('journalTitle', this.journalTitle);
@@ -47,6 +63,7 @@ export class SubmissionComponent {
   
     this.http.post<any>('https://jms-backend-testing.vercel.app/journals', formData).subscribe(
       (response) => {
+        this.snackBar.open('Manuscript submitted successfully.', 'Close', { duration: 3000, verticalPosition: 'top'});
         console.log(response.message);
         // Reset form fields after successful submission
         this.journalTitle = '';
@@ -89,6 +106,7 @@ export class SubmissionComponent {
   }
 
     logout() {
+      this.snackBar.open('Logout successful.', 'Close', { duration: 3000, verticalPosition: 'top'});
       this.authService.setIsUserLogged(false);
       this.authService.clearUserId();
       this.router.navigate(['login'])
@@ -104,19 +122,4 @@ export class SubmissionComponent {
       this.isDropdownOpen = false;
     }
     
-    @HostListener('document:click', ['$event'])
-    onDocumentClick(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-
-    // Check if the click is inside the dropdown toggle button
-    if (target.matches('.dropdown-toggle')) {
-      this.toggleDropdown(); // Toggle the dropdown
-    } else {
-      // Check if the click is outside the dropdown
-      const dropdownContainer = target.closest('.dropdown');
-      if (!dropdownContainer && this.isDropdownOpen) {
-        this.isDropdownOpen = false;
-      }
-    }
-  }
 }

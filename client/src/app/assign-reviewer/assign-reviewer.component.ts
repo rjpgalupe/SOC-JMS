@@ -77,6 +77,7 @@ export class AssignReviewerComponent {
   
     // Check if all required fields are filled
     if (!this.selectedJournal || !reviewerIds.every(id => !!id) || !rubricId) {
+      this.snackBar.open('Please fill in all required fields.', 'Close', { duration: 3000, verticalPosition: 'top'});
       console.error('Please fill in all required fields.'); // Handle validation error
       return;
     }
@@ -103,9 +104,11 @@ export class AssignReviewerComponent {
   updateJournalStatus(journalId: string): void {
     this.journalService.updateJournalStatus(journalId, 'Under Review').subscribe(
       (response: any) => {
+        this.snackBar.open('Journal status updated to "Under Review"', 'Close', { duration: 3000, verticalPosition: 'top'});
         console.log('Journal status updated to "Under Review"');
       },
       (error: any) => {
+        this.snackBar.open('Error updating journal status.', 'Close', { duration: 3000, verticalPosition: 'top'});
         console.error('Error updating journal status:', error);
       }
     );
@@ -117,7 +120,9 @@ export class AssignReviewerComponent {
   
 
   logout() {
+    this.snackBar.open('Logout successful.', 'Close', { duration: 3000, verticalPosition: 'top'});
     this.authService.setIsUserLogged(false);
+    this.authService.clearUserId();
     this.router.navigate(['login'])
   } 
 

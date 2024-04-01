@@ -4,6 +4,7 @@ import { RubricService } from '../rubric.service';
 import { HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-view-rubric',
@@ -23,7 +24,8 @@ export class ViewRubricComponent implements OnInit {
     private route: ActivatedRoute,
     private rubricService: RubricService,
     private authService: AuthService, 
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -84,6 +86,7 @@ export class ViewRubricComponent implements OnInit {
   }
 
   logout() {
+    this.snackBar.open('Logout successful.', 'Close', { duration: 3000, verticalPosition: 'top'});
     this.authService.setIsUserLogged(false);
     this.authService.clearUserId();
     this.router.navigate(['login'])

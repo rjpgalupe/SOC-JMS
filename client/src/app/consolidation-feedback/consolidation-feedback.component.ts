@@ -99,7 +99,7 @@ export class ConsolidationFeedbackComponent implements OnInit {
         },
         (error) => {
           console.error(error);
-          this.snackBar.open('Submit Feedback failed!', 'Close', { duration: 3000, verticalPosition: 'top'});
+          this.snackBar.open('Submit failed!', 'Close', { duration: 3000, verticalPosition: 'top'});
           // Handle error scenario
         }
       );
@@ -116,7 +116,10 @@ export class ConsolidationFeedbackComponent implements OnInit {
   }
 
   logout() {
+    this.snackBar.open('Logout successful.', 'Close', { duration: 3000, verticalPosition: 'top'});
     this.authService.setIsUserLogged(false);
+    this.authService.clearUserId();
     this.router.navigate(['login'])
   } 
+  
 }

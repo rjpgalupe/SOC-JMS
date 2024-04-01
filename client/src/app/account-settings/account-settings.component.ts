@@ -74,6 +74,7 @@ export class AccountSettingsComponent {
 
     const userId = sessionStorage.getItem('userId'); // Get the user's ID from sessionStorage
     if (!userId) {
+      this.snackBar.open('User ID not found!', 'Close', { duration: 3000, verticalPosition: 'top' });
       console.error('User ID not found in sessionStorage');
       return;
     }
@@ -135,6 +136,7 @@ export class AccountSettingsComponent {
   }
 
   logout() {
+    this.snackBar.open('Logout successful.', 'Close', { duration: 3000, verticalPosition: 'top'});
     this.authService.setIsUserLogged(false);
     this.authService.clearUserId();
     this.router.navigate(['login'])

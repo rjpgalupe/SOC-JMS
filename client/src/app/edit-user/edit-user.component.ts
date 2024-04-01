@@ -1,6 +1,7 @@
 import { Component,HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from '../user.service';
 
 @Component({
@@ -15,7 +16,9 @@ export class EditUserComponent {
   showNotifDropdown: boolean = false;
   isDropdownOpen = false;
 
-  constructor(private authService: AuthService, private router: Router, ) {}
+  constructor(private authService: AuthService, 
+              private router: Router, 
+              private snackBar: MatSnackBar) {}
   
   ngOnInit(): void {
     // Retrieve user role from session storage
@@ -24,22 +27,6 @@ export class EditUserComponent {
     this.isAdmin = userRole === 'admin';
     this.isSuperAdmin = userRole === 'superadmin';
   }
-
-  logout() {
-    this.authService.setIsUserLogged(false);
-    this.authService.clearUserId();
-    this.router.navigate(['login'])
-    } 
-
-    toggleDropdown(){
-      this.isDropdownOpen = !this.isDropdownOpen;
-      this.showNotifDropdown = false;
-    }
-  
-    toggleNotifDropdown(){
-      this.showNotifDropdown = !this.showNotifDropdown;
-      this.isDropdownOpen = false;
-    }
 
     @HostListener('document:click', ['$event'])
     onDocumentClick(event: MouseEvent) {
@@ -60,4 +47,21 @@ export class EditUserComponent {
       }
     }
   }
+
+  logout() {
+    this.snackBar.open('Logout successful.', 'Close', { duration: 3000, verticalPosition: 'top'});
+    this.authService.setIsUserLogged(false);
+    this.authService.clearUserId();
+    this.router.navigate(['login'])
+  } 
+
+    toggleDropdown(){
+      this.isDropdownOpen = !this.isDropdownOpen;
+      this.showNotifDropdown = false;
+    }
+  
+    toggleNotifDropdown(){
+      this.showNotifDropdown = !this.showNotifDropdown;
+      this.isDropdownOpen = false;
+    }
 }

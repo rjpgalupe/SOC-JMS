@@ -24,13 +24,6 @@ export class UserManagementComponent implements OnInit {
               private userService: UserService,
               private snackBar: MatSnackBar) {}
 
-  toggleNotifDropdown() {
-    this.showNotifDropdown = !this.showNotifDropdown;
-  }
-
-  toggleDropdown() {
-    this.isDropdownOpen = !this.isDropdownOpen;
-  }
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
@@ -127,9 +120,21 @@ ngOnInit(): void {
   }
   
   
-   logout() {
+  logout() {
+    this.snackBar.open('Logout successful.', 'Close', { duration: 3000, verticalPosition: 'top'});
     this.authService.setIsUserLogged(false);
     this.authService.clearUserId();
     this.router.navigate(['login'])
-    } 
+  } 
+
+  toggleDropdown(){
+    this.isDropdownOpen = !this.isDropdownOpen;
+    this.showNotifDropdown = false;
+  }
+
+  toggleNotifDropdown(){
+    this.showNotifDropdown = !this.showNotifDropdown;
+    this.isDropdownOpen = false;
+  }
+
 }

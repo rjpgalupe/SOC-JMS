@@ -2,6 +2,7 @@ import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { HttpClient } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -15,7 +16,10 @@ export class ResearcherDashboardComponent {
   showNotifDropdown: boolean = false;
   isDropdownOpen = false;
 
-  constructor(private authService: AuthService, private router: Router, private http: HttpClient,) {}
+  constructor(private authService: AuthService, 
+              private router: Router, 
+              private http: HttpClient,
+              private snackBar: MatSnackBar) {}
 
   markNotificationAsRead(notification: any) {
     // Update the notification as read in the backend
@@ -34,11 +38,28 @@ export class ResearcherDashboardComponent {
     );
   }
 
+      @HostListener('document:click', ['$event'])
+      onDocumentClick(event: MouseEvent) {
+      const target = event.target as HTMLElement;
+
+      // Check if the click is inside the dropdown toggle button
+      if (target.matches('.dropdown-toggle')) {
+        this.toggleDropdown(); // Toggle the dropdown
+      } else {
+        // Check if the click is outside the dropdown
+        const dropdownContainer = target.closest('.dropdown');
+        if (!dropdownContainer && this.isDropdownOpen) {
+          this.isDropdownOpen = false;
+        }
+      }
+    }
+
     viewJournal(journalId: string): void {
       this.router.navigate(['/researcher/view-journal', journalId]);
     }
 
     logout() {
+      this.snackBar.open('Logout successful.', 'Close', { duration: 3000, verticalPosition: 'top'});
       this.authService.setIsUserLogged(false);
       this.authService.clearUserId();
       this.router.navigate(['login'])
@@ -53,19 +74,4 @@ export class ResearcherDashboardComponent {
       this.isDropdownOpen = !this.isDropdownOpen;
     }
 
-    @HostListener('document:click', ['$event'])
-    onDocumentClick(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-
-    // Check if the click is inside the dropdown toggle button
-    if (target.matches('.dropdown-toggle')) {
-      this.toggleDropdown(); // Toggle the dropdown
-    } else {
-      // Check if the click is outside the dropdown
-      const dropdownContainer = target.closest('.dropdown');
-      if (!dropdownContainer && this.isDropdownOpen) {
-        this.isDropdownOpen = false;
-      }
-    }
-  }
 }

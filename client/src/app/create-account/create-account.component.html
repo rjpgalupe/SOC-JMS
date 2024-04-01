@@ -2,13 +2,23 @@
 
 <nav id="navbarH">
   <ul class="rightnavText">
-    <li>
-      <a href="#">
-        <span class="nav-icon">
-          <i class="fa-solid fa-bell"></i>
-        </span>
-      </a>
-    </li>
+    <li class="dropdown" (click)="toggleNotifDropdown()">
+        <input type="checkbox" id="notigDropdownToggle" class="dropdown-toggle" [ngModel]="showNotifDropdown">
+        <a>
+          <label for="notifDropdownToggle" class="dropdown-label">
+            <span class="nav-icon">
+              <i class="fa-solid fa-bell">
+                <span class="badge" *ngIf="unreadNotifications.length > 0">{{ unreadNotifications.length }}</span>
+              </i>              
+            </span>
+          </label>
+        </a>
+        <div class="dropdown-content" *ngIf="showNotifDropdown">
+          <div *ngFor="let notification of unreadNotifications">
+            <a>{{ notification.message }}</a>
+          </div>
+        </div>
+      </li>
     <li class="dropdown" (click)="isDropdownOpen = !isDropdownOpen">
       <input type="checkbox" id="userDropdownToggle" class="dropdown-toggle" [ngModel]="isDropdownOpen">
         <label for="userDropdownToggle" class="dropdown-label">

@@ -4,6 +4,7 @@ import { AuthService } from '../auth.service';
 import { JournalService } from '../journal.service';
 import { HostListener } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-researcher-view-journal',
@@ -23,7 +24,8 @@ export class ResearcherViewJournalComponent implements OnInit{
               private authService: AuthService, 
               private route: ActivatedRoute, 
               private journalService: JournalService,
-              private http: HttpClient) {}
+              private http: HttpClient,
+              private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -87,6 +89,7 @@ export class ResearcherViewJournalComponent implements OnInit{
   }
 
   logout() {
+    this.snackBar.open('Logout successful.', 'Close', { duration: 3000, verticalPosition: 'top'});
     this.authService.setIsUserLogged(false);
     this.authService.clearUserId();
     this.router.navigate(['login'])

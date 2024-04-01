@@ -60,7 +60,7 @@ export class CreateRubricComponent {
     this.rubricService.createRubric(this.rubric).subscribe(
       (response) => {
         console.log('Rubric saved successfully', response);
-        this.snackBar.open('Rubric saved successfully!', 'Close', { duration: 3000, verticalPosition: 'top'});
+        this.snackBar.open('Rubric saved successfully.', 'Close', { duration: 3000, verticalPosition: 'top'});
         // Reset rubric data after saving
         this.rubric = {
           name: '',
@@ -78,6 +78,7 @@ export class CreateRubricComponent {
   }
   
   removeComponent(componentIndex: number) {
+    this.snackBar.open('Criteria Removed!', 'Close', { duration: 3000, verticalPosition: 'top'});
     this.rubric.components.splice(componentIndex, 1);
   }  
 
@@ -86,6 +87,7 @@ export class CreateRubricComponent {
   }
 
   removeScore(componentIndex: number, scoreIndex: number) {
+    this.snackBar.open('Score Removed!', 'Close', { duration: 3000, verticalPosition: 'top'});
     this.rubric.components[componentIndex].levels.splice(scoreIndex, 1);
   }
 
@@ -94,6 +96,7 @@ export class CreateRubricComponent {
   }
 
   logout() {
+    this.snackBar.open('Logout successful.', 'Close', { duration: 3000, verticalPosition: 'top'});
     this.authService.setIsUserLogged(false);
     this.authService.clearUserId();
     this.router.navigate(['login'])

@@ -26,16 +26,6 @@ export class JournalManagementComponent {
               private userService: UserService,
               private snackBar: MatSnackBar) {}
 
-              
-  toggleDropdown() {
-    this.isDropdownOpen = !this.isDropdownOpen;
-    this.showNotifDropdown = false;
-  }
-
-  toggleNotifDropdown() {
-    this.showNotifDropdown = !this.showNotifDropdown;
-    this.isDropdownOpen = false;
-  }
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
@@ -148,10 +138,21 @@ loadJournals () {
     this.router.navigate(['/admin/consolidation-feedback', journalId]);
   }
   
-  
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+    this.showNotifDropdown = false;
+  }
+
+  toggleNotifDropdown() {
+    this.showNotifDropdown = !this.showNotifDropdown;
+    this.isDropdownOpen = false;
+  }
   
   logout() {
+    this.snackBar.open('Logout successful.', 'Close', { duration: 3000, verticalPosition: 'top'});
     this.authService.setIsUserLogged(false);
+    this.authService.clearUserId();
     this.router.navigate(['login'])
   } 
+  
 }

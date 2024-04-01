@@ -1,6 +1,7 @@
 import { Component,HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from '../user.service';
 
 @Component({
@@ -15,7 +16,9 @@ export class AdminDashboardComponent {
   showNotifDropdown: boolean = false;
   isDropdownOpen = false;
 
-  constructor(private authService: AuthService, private router: Router, ) {}
+  constructor(private authService: AuthService, 
+              private router: Router, 
+              private snackBar: MatSnackBar,) {}
   
   ngOnInit(): void {
     // Retrieve user role from session storage
@@ -46,6 +49,7 @@ export class AdminDashboardComponent {
   }
 
   logout() {
+    this.snackBar.open('Logout successful.', 'Close', { duration: 3000, verticalPosition: 'top'});
     this.authService.setIsUserLogged(false);
     this.authService.clearUserId();
     this.router.navigate(['login'])

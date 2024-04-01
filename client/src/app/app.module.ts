@@ -8,8 +8,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { AuthGuard } from './auth.guard';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Add this import
-import { MatSnackBarModule } from '@angular/material/snack-bar'; // Add this import
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -43,6 +43,7 @@ import { CreateRubricComponent } from './create-rubric/create-rubric.component';
 import { ViewRubricComponent } from './view-rubric/view-rubric.component';
 import { ConsolidationFeedbackComponent } from './consolidation-feedback/consolidation-feedback.component';
 import { ResearcherViewJournalComponent } from './researcher-view-journal/researcher-view-journal.component';
+import { PublicationComponent } from './publication/publication.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -73,6 +74,7 @@ const routes: Routes = [
   { path: 'view-rubric/:rubricId', component: ViewRubricComponent},
   { path: 'admin/consolidation-feedback/:journalId', component: ConsolidationFeedbackComponent},
   { path: 'researcher/view-journal/:journalId', component: ResearcherViewJournalComponent},
+  { path: 'publication', component: PublicationComponent},
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 
@@ -106,7 +108,8 @@ const routes: Routes = [
     CreateRubricComponent,
     ViewRubricComponent,
     ConsolidationFeedbackComponent,
-    ResearcherViewJournalComponent
+    ResearcherViewJournalComponent,
+    PublicationComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -115,7 +118,7 @@ const routes: Routes = [
     HttpClientModule,
     BrowserAnimationsModule,
     MatFormFieldModule,
-    MatInputModule, // Add this line
+    MatInputModule,
     MatTabsModule,
     MatSnackBarModule,
     ReactiveFormsModule,

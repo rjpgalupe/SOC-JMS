@@ -119,7 +119,7 @@ markNotificationAsRead(notification: any) {
   );
 }
 
-    toggleDropdown(){
+  toggleDropdown(){
     this.isDropdownOpen = !this.isDropdownOpen;
     this.showNotifDropdown = false;
   }
@@ -130,7 +130,9 @@ markNotificationAsRead(notification: any) {
   }
 
   logout() {
+    this.snackBar.open('Logout successful.', 'Close', { duration: 3000, verticalPosition: 'top'});
     this.authService.setIsUserLogged(false);
+    this.authService.clearUserId();
     this.router.navigate(['login'])
   } 
 

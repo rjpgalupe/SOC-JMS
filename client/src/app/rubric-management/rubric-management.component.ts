@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { UserService } from '../user.service';
 import { RubricService } from '../rubric.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-rubric-management',
@@ -21,7 +22,8 @@ export class RubricManagementComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private rubricService: RubricService
+    private rubricService: RubricService,
+    private snackBar: MatSnackBar
   ) {}
   
   ngOnInit(): void {
@@ -32,6 +34,27 @@ export class RubricManagementComponent {
     this.isAdmin = userRole === 'admin';
     this.isSuperAdmin = userRole === 'superadmin';
   }
+
+  
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+  const target = event.target as HTMLElement;
+
+  // Check if the click is inside the dropdown toggle button
+  if (target.matches('.dropdown-toggle')) {
+    this.toggleDropdown(); // Toggle the dropdown
+  } else {
+    // Check if the click is outside the dropdown
+    const dropdownContainer = target.closest('.dropdown');
+    if (!dropdownContainer && this.isDropdownOpen) {
+      this.isDropdownOpen = false;
+    }
+    const notifDropdown = target.closest('.dropdown');
+    if (!notifDropdown && this.showNotifDropdown) {
+      this.showNotifDropdown = false;
+    }
+  }
+}
 
   fetchRubrics() {
     this.rubricService.getRubrics().subscribe(
@@ -52,39 +75,20 @@ export class RubricManagementComponent {
   }
 
   logout() {
+    this.snackBar.open('Logout successful.', 'Close', { duration: 3000, verticalPosition: 'top'});
     this.authService.setIsUserLogged(false);
     this.authService.clearUserId();
     this.router.navigate(['login'])
-    } 
+  } 
 
-    toggleDropdown(){
-      this.isDropdownOpen = !this.isDropdownOpen;
-      this.showNotifDropdown = false;
-    }
-  
-    toggleNotifDropdown(){
-      this.showNotifDropdown = !this.showNotifDropdown;
-      this.isDropdownOpen = false;
-    }
+  toggleDropdown(){
+    this.isDropdownOpen = !this.isDropdownOpen;
+    this.showNotifDropdown = false;
+  }
 
-    @HostListener('document:click', ['$event'])
-    onDocumentClick(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-
-    // Check if the click is inside the dropdown toggle button
-    if (target.matches('.dropdown-toggle')) {
-      this.toggleDropdown(); // Toggle the dropdown
-    } else {
-      // Check if the click is outside the dropdown
-      const dropdownContainer = target.closest('.dropdown');
-      if (!dropdownContainer && this.isDropdownOpen) {
-        this.isDropdownOpen = false;
-      }
-      const notifDropdown = target.closest('.dropdown');
-      if (!notifDropdown && this.showNotifDropdown) {
-        this.showNotifDropdown = false;
-      }
-    }
+  toggleNotifDropdown(){
+    this.showNotifDropdown = !this.showNotifDropdown;
+    this.isDropdownOpen = false;
   }
   
 }

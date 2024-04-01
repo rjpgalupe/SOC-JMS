@@ -2,6 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-reviewer-dashboard',
@@ -14,7 +15,12 @@ export class ReviewerDashboardComponent implements OnInit {
   showNotifDropdown: boolean = false;
   isDropdownOpen = false;
 
-  constructor(private authService: AuthService, private router: Router, private http: HttpClient) {}
+  constructor(private authService: AuthService, 
+              private router: Router, 
+              private http: HttpClient,
+              private snackBar: MatSnackBar) {}
+
+  
   ngOnInit(): void {
     // Fetch unread notifications for the current user
     const userId = sessionStorage.getItem('userId');
@@ -85,6 +91,7 @@ markNotificationAsRead(notification: any) {
   }
 
   logout() {
+    this.snackBar.open('Logout successful.', 'Close', { duration: 3000, verticalPosition: 'top'});
     this.authService.setIsUserLogged(false);
     this.authService.clearUserId();
     this.router.navigate(['login'])

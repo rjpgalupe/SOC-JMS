@@ -2,6 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { UserService } from '../user.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -13,14 +14,16 @@ export class SuperadminUserManagementComponent {
   users: any[] = [];
   filteredUsers: any[] = [];
   searchQuery: string = '';
-
+  isAdmin: boolean = false;
+  isSuperAdmin: boolean = false;
+  unreadNotifications: any[] = [];
+  showNotifDropdown: boolean = false;
   isDropdownOpen = false;
 
-  constructor(private authService: AuthService, private router: Router, private userService: UserService) {}
-
-  toggleDropdown() {
-    this.isDropdownOpen = !this.isDropdownOpen;
-  }
+  constructor(private authService: AuthService, 
+              private router: Router, 
+              private userService: UserService,
+              private snackBar: MatSnackBar) {}
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
@@ -34,6 +37,10 @@ export class SuperadminUserManagementComponent {
     const dropdownContainer = target.closest('.dropdown');
     if (!dropdownContainer && this.isDropdownOpen) {
       this.isDropdownOpen = false;
+    }
+    const notifDropdown = target.closest('.dropdown');
+    if (!notifDropdown && this.showNotifDropdown) {
+      this.showNotifDropdown = false;
     }
   }
 }
@@ -85,9 +92,21 @@ ngOnInit(): void {
   }
   
   
-   logout() {
+  logout() {
+    this.snackBar.open('Logout successful.', 'Close', { duration: 3000, verticalPosition: 'top'});
     this.authService.setIsUserLogged(false);
     this.authService.clearUserId();
     this.router.navigate(['login'])
-    } 
+  } 
+
+  toggleDropdown(){
+    this.isDropdownOpen = !this.isDropdownOpen;
+    this.showNotifDropdown = false;
+  }
+
+  toggleNotifDropdown(){
+    this.showNotifDropdown = !this.showNotifDropdown;
+    this.isDropdownOpen = false;
+  }
+
 }

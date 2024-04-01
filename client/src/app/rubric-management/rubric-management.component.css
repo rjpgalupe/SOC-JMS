@@ -241,7 +241,7 @@ li a {
   padding-top: 8rem;
 }
 
-.createReviewer{
+.createRubric{
   background-color: #ff5a00;
   border-radius: 12px;
   color: #fff;
@@ -255,7 +255,7 @@ li a {
   cursor: pointer;
 }
 
-.createReviewer:hover{
+.createRubric:hover{
   background-color: #f3c408;
   color: #fff; 
 }

@@ -253,7 +253,7 @@ li a {
   box-sizing: border-box;
   border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: 14px; /* Adjust the font size as needed */
+  font-size: 16px; /* Adjust the font size as needed */
 }
 
 /* Button styles */
@@ -297,12 +297,16 @@ li a {
 }
 
 .savebtn {
-  background-color: #ff914d;
+  background-color: #ff5a00;
   color: #fff;
 }
 
 .savebtn:hover {
-  background-color: #ff5a00;
+  background-color: #f3c408;
+}
+
+.text-danger {
+  color: #ed3837;
 }
 
 /* Centered button */

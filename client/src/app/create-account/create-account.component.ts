@@ -16,7 +16,8 @@ export class CreateAccountComponent {
   role: string = '';
   isAdmin: boolean = false;
   isSuperAdmin: boolean = false;
-
+  unreadNotifications: any[] = [];
+  showNotifDropdown: boolean = false;
   isDropdownOpen = false;
 
   constructor(private authService: AuthService, private router: Router, private snackBar: MatSnackBar) {}
@@ -25,10 +26,6 @@ export class CreateAccountComponent {
     const userRole = sessionStorage.getItem('userRole');
     this.isAdmin = userRole === 'admin';
     this.isSuperAdmin = userRole === 'superadmin';
-  }
-
-  toggleDropdown() {
-    this.isDropdownOpen = !this.isDropdownOpen;
   }
 
   @HostListener('document:click', ['$event'])
@@ -43,6 +40,10 @@ export class CreateAccountComponent {
     const dropdownContainer = target.closest('.dropdown');
     if (!dropdownContainer && this.isDropdownOpen) {
       this.isDropdownOpen = false;
+    }
+    const notifDropdown = target.closest('.dropdown');
+    if (!notifDropdown && this.showNotifDropdown) {
+      this.showNotifDropdown = false;
     }
   }
 }
@@ -69,7 +70,19 @@ export class CreateAccountComponent {
   }
 
   logout() {
+    this.snackBar.open('Logout successful.', 'Close', { duration: 3000, verticalPosition: 'top'});
     this.authService.setIsUserLogged(false);
+    this.authService.clearUserId();
     this.router.navigate(['login'])
-    }
+  } 
+
+  toggleNotifDropdown(){
+    this.showNotifDropdown = !this.showNotifDropdown;
+    this.isDropdownOpen = false;
+  }
+
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
 } 

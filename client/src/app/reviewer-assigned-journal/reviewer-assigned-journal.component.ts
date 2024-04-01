@@ -4,6 +4,7 @@ import { AuthService } from '../auth.service';
 import { JournalService } from '../journal.service';
 import { UserService } from '../user.service';
 import { HttpClient } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-reviewer-assigned-journal',
@@ -23,7 +24,8 @@ export class ReviewerAssignedJournalComponent {
               private router: Router, 
               private journalService: JournalService, 
               private userService: UserService, 
-              private http: HttpClient) {}
+              private http: HttpClient,
+              private snackBar: MatSnackBar) {}
   
   ngOnInit(): void {
     // Get the user ID from localStorage
@@ -133,7 +135,10 @@ markNotificationAsRead(notification: any) {
   }
 
   logout() {
+    this.snackBar.open('Logout successful.', 'Close', { duration: 3000, verticalPosition: 'top'});
     this.authService.setIsUserLogged(false);
+    this.authService.clearUserId();
     this.router.navigate(['login'])
   } 
+  
 }
