@@ -81,7 +81,7 @@ const routes: Routes = [
   { path: 'researcher/view-journal/:journalId', component: ResearcherViewJournalComponent, canActivate: [AuthGuard], data: { expectedRoles: ['author'] }},
   { path: 'publication', component: PublicationComponent},
   { path: 'publication-view-journal/:journalId', component: PublicationViewJournalComponent},
-  { path: '', redirectTo: '/pubication]', pathMatch: 'full' }
+  { path: '', redirectTo: '/publication', pathMatch: 'full' }
 ];
 
 @NgModule({
