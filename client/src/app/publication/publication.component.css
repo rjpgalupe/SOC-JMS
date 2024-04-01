@@ -1,0 +1,93 @@
+h1 {
+    margin-left: 5rem;
+    font-size: 30px;
+}
+  
+#navbarH {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #424242;
+    margin: auto;
+    height: 6rem;
+    padding-right: 3rem;
+    color: #fff;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+#login {
+    margin-right: 1rem;
+}
+
+#login, #register {
+    font-weight: 500;
+    font-size: 20px;
+    width: 130px;
+    padding: 5px;
+    background-color: #fe9800;
+    border-radius: 20px;
+}
+
+#login:hover, #register:hover{
+    color: #000;
+    background-color: #ff5a00;
+}
+
+.container {
+    padding-top: 8rem;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
+.header{
+    text-align: center; /* Center the header */
+    font-size: 30px;
+}
+
+.published {
+    font-size: 20px;
+}
+
+.journal-item {
+    display: block;
+    margin: 10px;
+}
+
+.journal-box {
+    border: 1px solid #ccc;
+    padding: 20px;
+    width: 800px; /* Box width */
+}
+
+.journal-box button {
+    text-decoration: none;
+    color: blue;
+    font-weight: bold;
+}
+
+.journal-box button:hover {
+    cursor: pointer;
+    color: red;
+}
+
+.pagination button {
+    margin-top: 10px;
+    padding-right: 20px;
+  }
+  
+  .pagination button.active {
+    color: #1167b1;
+    text-decoration: underline;
+    cursor: default;
+  }
+  
+  .pagination button:hover {
+    color: #1167b1;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+

@@ -71,4 +71,8 @@ getConsolidatedFeedback(journalId: string): Observable<any> {
   return this.http.get<any>(`${this.apiUrl}/journals/${journalId}/consolidated-feedback`);
 }
 
+publishJournal(journalId: string, updatedData: any): Observable<any> {
+  return this.http.put<any>(`${this.apiUrl}/journals/${journalId}`, updatedData);
+}
+
 }

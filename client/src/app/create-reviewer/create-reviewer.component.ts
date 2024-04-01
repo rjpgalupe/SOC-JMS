@@ -59,6 +59,6 @@ export class CreateReviewerComponent {
 
   logout() {
     this.authService.setIsUserLogged(false);
-    this.router.navigate(['login'])
+    this.router.navigate(['publication'])
     }
 }

@@ -1,5 +1,5 @@
 import { Component, HostListener } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { JournalService } from '../journal.service';
 import { UserService } from '../user.service';
@@ -19,12 +19,16 @@ export class JournalManagementComponent {
   unreadNotifications: any[] = [];
   showNotifDropdown: boolean = false;
   isDropdownOpen = false;
+  currentPage = 1;
+  itemsPerPage = 5;
+  totalPages: number = 0;
 
-  constructor(private authService: AuthService, 
-              private router: Router, 
-              private journalService: JournalService, 
-              private userService: UserService,
-              private snackBar: MatSnackBar) {}
+  constructor(private authService: AuthService,
+    private router: Router,
+    private journalService: JournalService,
+    private userService: UserService,
+    private snackBar: MatSnackBar,
+    private route: ActivatedRoute) { }
 
 
   @HostListener('document:click', ['$event'])
@@ -54,6 +58,22 @@ ngOnInit(): void {
   this.isAdmin = userRole === 'admin';
   this.isSuperAdmin = userRole === 'superadmin';
   this.loadJournals();
+  this.route.queryParams.subscribe((params: Params) => {
+    const page = params['page'];
+    if (page === 'last') {
+      // Load journals first and then calculate the last page
+      this.loadJournals(() => {
+        this.calculateTotalPages(); // Calculate the total pages
+        this.currentPage = this.totalPages; 
+        // Navigate to the last page if the current page is greater than total pages
+        if (this.currentPage > this.totalPages) {
+          this.router.navigate([], { relativeTo: this.route, queryParams: { page: this.totalPages } });
+        }
+      });
+    } else if (page) {
+      this.currentPage = parseInt(page, 10); // Parse page to integer
+    }
+  });
 }
 
 loadReviewers(): void {
@@ -93,44 +113,85 @@ deleteJournal(journalId: string) {
   }
 }
 
-loadJournals () {
+loadJournals(callback: () => void = () => {}): void {
   this.journalService.getJournals().subscribe(
     (data) => {
       this.journals = data.map((journal, index) => ({ ...journal, id: index + 1 }));
       this.loadReviewers(); // Call the method to load reviewer names
       this.filteredJournals = [...this.journals];
+      this.calculateTotalPages();
+      callback(); // Execute the callback after loading journals
     },
     (error) => {
       console.error(error);
-      this.snackBar.open('Assign failed!', 'Close', { duration: 3000, verticalPosition: 'top'});
+      this.snackBar.open('Assign failed!', 'Close', { duration: 3000, verticalPosition: 'top' });
       // Handle error
     }
   );
 }
 
-  filterJournals() {
-    if (!this.searchQuery.trim()) {
-      this.filteredJournals = [...this.journals];
-    } else {
-      const searchTerm = this.searchQuery.toLowerCase().trim();
-      this.filteredJournals = this.journals.filter(journal => {
-        // Check if the fields are defined before calling toLowerCase()
-        const id = journal.id ? journal.id.toString().toLowerCase() : '';
-        const title = journal.journalTitle ? journal.journalTitle.toLowerCase() : '';
-        const author = journal.author ? journal.author.toLowerCase() : '';
-        const status = journal.status ? journal.status.toLowerCase() : '';
-  
-        // Filter the journals based on any of the fields containing the searchTerm
-        return id.includes(searchTerm) ||
-               title.includes(searchTerm) ||
-               author.includes(searchTerm) ||
-               status.includes(searchTerm);
-      });
-    }
+
+filterJournals() {
+  if (!this.searchQuery.trim()) {
+    this.currentPage = 1; // Reset pagination to the first page
+    this.filteredJournals = [...this.journals];
+  } else {
+    const searchTerm = this.searchQuery.toLowerCase().trim().replace(/\s+/g, ' '); // Replace consecutive spaces with a single space
+    this.filteredJournals = this.journals.filter(journal => {
+      const authorString = Array.isArray(journal.authors) ? journal.authors.join(', ') : journal.authors;
+      return (
+        journal.journalTitle.toLowerCase().includes(searchTerm) ||
+        (typeof authorString === 'string' && authorString.toLowerCase().includes(searchTerm)) ||
+        journal.status.toLowerCase().includes(searchTerm) ||
+        (journal.reviewerNames && journal.reviewerNames.some((reviewerName: string) => reviewerName.toLowerCase().includes(searchTerm)))
+      );
+    });
+    this.currentPage = 1; // Reset pagination to the first page when a new search query is entered
   }
+}
+
+
+publishJournal(journal: any) {
+  const journalId = journal._id;
+  const currentDate = new Date().toISOString(); // Get the current date in ISO format
+  const updatedJournalData = { status: 'Published', publicationDate: currentDate }; // New data to update
+
+  this.journalService.publishJournal(journalId, updatedJournalData).subscribe(
+    () => {
+      // Update the status and publication date locally
+      const updatedJournal = this.journals.find(j => j._id === journalId);
+      if (updatedJournal) {
+        updatedJournal.status = 'Published';
+        updatedJournal.publicationDate = currentDate;
+      }
+
+      // Update the journal status to 'Published'
+      this.journalService.updateJournalStatus(journalId, 'Published').subscribe(
+        (response: any) => {
+          console.log('Journal status updated to Published');
+        },
+        (error: any) => {
+          console.error('Error updating journal status:', error);
+        }
+      );
+
+      this.snackBar.open('Journal published successfully!', 'Close', { duration: 3000, verticalPosition: 'top' });
+    },
+    (error) => {
+      console.error('Error publishing journal:', error);
+      this.snackBar.open('Failed to publish journal!', 'Close', { duration: 3000, verticalPosition: 'top' });
+      // Handle error
+    }
+  );
+}
   
   assignReviewer(journal: any) {
-    this.router.navigate(['/admin/review-management/assign-reviewer', journal._id, journal.journalTitle]);
+    if (journal.status === "Under Review") {
+      this.router.navigate(['/admin/review-management/reassign-reviewer', journal._id, journal.journalTitle])
+    }
+    else {
+      this.router.navigate(['/admin/review-management/assign-reviewer', journal._id, journal.journalTitle]);
+    }
   }
 
   viewConsolidatedFeedback(journalId: string) {
@@ -147,12 +208,59 @@ loadJournals () {
     this.showNotifDropdown = !this.showNotifDropdown;
     this.isDropdownOpen = false;
   }
+
+  onPageChange(page: number) {
+    // Navigate to the same route with the page parameter
+    this.router.navigate([], { relativeTo: this.route, queryParams: { page: page } });
+  }
+
+
+
+  // Calculate the index of the first item displayed on the current page
+  get startIndex(): number {
+    return (this.currentPage - 1) * this.itemsPerPage;
+  }
+
+  // Calculate the index of the last item displayed on the current page
+  get endIndex(): number {
+    return Math.min(this.startIndex + this.itemsPerPage - 1, this.filteredJournals.length - 1);
+  }
+
+  getPageNumbers(): number[] {
+    const totalPages = Math.ceil(this.filteredJournals.length / this.itemsPerPage);
+    const visiblePages = Math.min(totalPages, 5); // Maximum 5 pages shown
+    const startPage = Math.max(1, this.currentPage - Math.floor(visiblePages / 2));
+    const endPage = Math.min(totalPages, startPage + visiblePages - 1);
+
+    const pageNumbers = [];
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+    return pageNumbers;
+  }
+
+  goToPage(pageNumber: number) {
+    // Navigate to the same route with the page parameter
+    this.router.navigate([], { relativeTo: this.route, queryParams: { page: pageNumber } });
+  }
+
+  goToFirstPage() {
+    this.onPageChange(1);
+  }
+
+  goToLastPage() {
+    this.onPageChange(this.totalPages);
+  }
+
+  calculateTotalPages(): void {
+    this.totalPages = Math.ceil(this.filteredJournals.length / this.itemsPerPage);
+  }
   
   logout() {
     this.snackBar.open('Logout successful.', 'Close', { duration: 3000, verticalPosition: 'top'});
     this.authService.setIsUserLogged(false);
     this.authService.clearUserId();
-    this.router.navigate(['login'])
+    this.router.navigate(['publication'])
   } 
   
 }

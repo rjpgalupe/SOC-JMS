@@ -1,90 +1,44 @@
-<nav id="navbarH">
-  <ul class="rightnavText">
-    <li class="dropdown" (click)="toggleNotifDropdown()">
-      <input type="checkbox" id="notigDropdownToggle" class="dropdown-toggle" [ngModel]="showNotifDropdown">
-      <a>
-        <label for="notifDropdownToggle" class="dropdown-label">
-          <span class="nav-icon">
-            <i class="fa-solid fa-bell">
-              <span class="badge" *ngIf="unreadNotifications.length > 0">{{ unreadNotifications.length }}</span>
-            </i>              
-          </span>
-        </label>
-      </a>
-      <div class="dropdown-content" *ngIf="showNotifDropdown">
-        <div *ngFor="let notification of notifications">
-          <a [ngClass]="{ 'unread': notification.status === 'unread', 'read': notification.status === 'read' }" 
-              (click)="markNotificationAsRead(notification); viewJournal(notification.journalId)">
-              <i *ngIf="notification.status === 'unread'" class="fa-solid fa-envelope"></i>
-              <i *ngIf="notification.status === 'read'" class="fa-solid fa-envelope-open"></i>
-              {{ notification.message }}
-          </a>
-        </div>
-      </div>      
-    </li>
-    <li class="dropdown" (click)="toggleDropdown()">
-      <input type="checkbox" id="userDropdownToggle" class="dropdown-toggle" [ngModel]="isDropdownOpen">
-        <label for="userDropdownToggle" class="dropdown-label">
-          <span class="nav-icon">
-            <i class="fa-solid fa-user-gear"></i>
-          </span>
-        </label>
-    <div class="dropdown-menu">
-      <a routerLink="/account-settings"><i class="fa-solid fa-gear"></i> Settings</a>
-      <button class="dropdown-item" (click)="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+<app-navbar></app-navbar>
+
+<div class="containerBox">
+  <div class="table-container">
+    <div class="searchBar">
+      <input type="text" placeholder="Search..." [(ngModel)]="searchQuery" (input)="filterJournals()">
     </div>
-    </li>
-  </ul>
-</nav>
-  
-<nav id="navbarV">
-  <ul class="leftnavText">
-    <img id="dashboardLogo" src="../../assets/soc_logo.png" alt="">
-    <li>
-      <a href="/reviewer/dashboard">
-        <i id="dashboardIcons" class="fa fa-line-chart" aria-hidden="true"></i>
-        Dashboard
-      </a>
-    </li>
-    <li>
-      <a href="/reviewer/assigned-journals" class="active">
-        <i id="dashboardIcons" class="fa-solid fa-book-open" aria-hidden="true"></i>
-      Journal
-      </a>
-    </li>
-  </ul>
-</nav>
-
-
-  <div class="containerBox">
-    <div class="table-container">
-      <div class="searchBar">
-        <input type="text" placeholder="Search..." [(ngModel)]="searchQuery" (input)="filterJournals()">
-      </div>
+    
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Journal Title</th>
+          <th>Author(s)</th>
+          <th>Status</th>
+          <th>Options</th>
+        </tr>
+      </thead>
       
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Journal Title</th>
-            <th>Author(s)</th>
-            <th>Status</th>
-            <th>Options</th>
-          </tr>
-        </thead>
-        
-        <tbody>
-          <tr *ngFor="let journal of filteredJournals">
-            <td>{{ journal.id }}</td>
-            <td>{{ journal.journalTitle }}</td>
-            <td>{{ journal.authors.join(', ') }}</td>
-            <td>{{ journal.status }}</td>
-            <td>
-              <button class="view" (click)="viewJournal(journal._id)">View</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <tbody>
+        <tr *ngFor="let journal of filteredJournals.slice(startIndex, endIndex + 1)">
+          <td>{{ journal.id }}</td>
+          <td>{{ journal.journalTitle }}</td>
+          <td>{{ journal.authors.join(', ') }}</td>
+          <td>{{ journal.status }}</td>
+          <td>
+            <button class="view" [disabled]="isFeedbackSubmitted(journal)" (click)="viewJournal(journal._id)">View</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pagination">
+      <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>
+      <span> 
+        <!-- Iterate over page numbers and add click handler -->
+        <ng-container *ngFor="let pageNumber of getPageNumbers()">
+          <button (click)="goToPage(pageNumber)" [class.active]="pageNumber === currentPage">{{ pageNumber }}</button>
+        </ng-container>
+      </span>
+      <button (click)="onPageChange(currentPage + 1)" [disabled]="endIndex === filteredJournals.length - 1">Next</button>
+
     </div>
   </div>
-  
+</div>

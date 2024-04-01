@@ -18,6 +18,10 @@ export class RubricManagementComponent {
   showNotifDropdown: boolean = false;
   isDropdownOpen = false;
   rubrics: any[] = [];
+  filteredRubrics: any[] = [];
+  searchQuery: string = '';
+  currentPage = 1;
+  itemsPerPage = 5;
 
   constructor(
     private authService: AuthService,
@@ -56,29 +60,30 @@ export class RubricManagementComponent {
   }
 }
 
-  fetchRubrics() {
-    this.rubricService.getRubrics().subscribe(
-      (rubrics: any[]) => {
-        this.rubrics = rubrics.map((rubric, index) => ({
-          ...rubric,
-          displayedId: index + 1 // Assign a new property for displayed ID starting from 1
-        }));
-      },
-      (error) => {
-        console.error('Error fetching rubrics:', error);
-      }
-    );
-  }
-  
-  viewRubric(rubricId: string) {
-    this.router.navigate(['/admin/rubric-management/view-rubric/', rubricId]);
-  }
+fetchRubrics() {
+  this.rubricService.getRubrics().subscribe(
+    (rubrics: any[]) => {
+      this.rubrics = rubrics.map((rubric, index) => ({
+        ...rubric,
+        displayedId: index + 1 // Assign a new property for displayed ID starting from 1
+      }));
+      this.filteredRubrics = [...this.rubrics];
+    },
+    (error) => {
+      console.error('Error fetching rubrics:', error);
+    }
+  );
+}
+
+viewRubric(rubricId: string) {
+  this.router.navigate(['/admin/rubric-management/view-rubric/', rubricId]);
+}
 
   logout() {
     this.snackBar.open('Logout successful.', 'Close', { duration: 3000, verticalPosition: 'top'});
     this.authService.setIsUserLogged(false);
     this.authService.clearUserId();
-    this.router.navigate(['login'])
+    this.router.navigate(['publication'])
   } 
 
   toggleDropdown(){
@@ -89,6 +94,52 @@ export class RubricManagementComponent {
   toggleNotifDropdown(){
     this.showNotifDropdown = !this.showNotifDropdown;
     this.isDropdownOpen = false;
+  }
+
+  // Method to filter rubrics based on search query
+  filterRubrics() {
+    if (this.searchQuery.trim() !== '') {
+      this.currentPage = 1;
+      this.filteredRubrics = this.rubrics.filter(rubric =>
+        rubric.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    } else {
+      this.filteredRubrics = [...this.rubrics];
+      this.currentPage = 1;
+    }
+  }
+
+  onPageChange(page: number) {
+    this.currentPage = page;
+  }
+  
+  
+
+  // Calculate the index of the first item displayed on the current page
+  get startIndex(): number {
+    return (this.currentPage - 1) * this.itemsPerPage;
+  }
+
+  // Calculate the index of the last item displayed on the current page
+  get endIndex(): number {
+    return Math.min(this.startIndex + this.itemsPerPage - 1, this.filteredRubrics.length - 1);
+  }
+
+  getPageNumbers(): number[] {
+    const totalPages = Math.ceil(this.filteredRubrics.length / this.itemsPerPage);
+    const visiblePages = Math.min(totalPages, 5); // Maximum 5 pages shown
+    const startPage = Math.max(1, this.currentPage - Math.floor(visiblePages / 2));
+    const endPage = Math.min(totalPages, startPage + visiblePages - 1);
+  
+    const pageNumbers = [];
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+    return pageNumbers;
+  }
+
+  goToPage(pageNumber: number) {
+    this.currentPage = pageNumber;
   }
   
 }

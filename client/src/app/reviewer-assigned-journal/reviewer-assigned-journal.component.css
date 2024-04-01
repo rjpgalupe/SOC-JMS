@@ -290,6 +290,12 @@ li a {
   color: #fff; 
 }
 
+.view[disabled] {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
 .searchBar {
   position: relative;
   right: 3rem;

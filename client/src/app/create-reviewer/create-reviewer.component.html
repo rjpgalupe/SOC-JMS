@@ -1,36 +1,4 @@
-<nav id="navbarH">
-  <ul class="rightnavText">
-    <li>
-      <a href="#">
-        <span class="nav-icon">
-          <i class="fa-solid fa-bell"></i>
-        </span>
-      </a>
-    </li>
-    <li class="dropdown" (click)="isDropdownOpen = !isDropdownOpen">
-      <input type="checkbox" id="userDropdownToggle" class="dropdown-toggle" [ngModel]="isDropdownOpen">
-        <label for="userDropdownToggle" class="dropdown-label">
-          <span class="nav-icon">
-            <i class="fa-solid fa-user-gear"></i>
-          </span>
-        </label>
-      <div class="dropdown-menu">
-        <a routerLink="/account-settings"><i class="fa-solid fa-gear"></i> Settings</a>
-        <button class="dropdown-item" (click)="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
-      </div>
-    </li>
-  </ul>
-</nav>
-  
-  <nav id="navbarV">
-    <ul class="leftnavText">
-      <li><a href="/admin/dashboard">Dashboard</a></li>
-      <li><a href="/admin/user-management">User Management</a></li>
-      <li><a href="/admin/reviewer-management">Reviewer Management</a></li>
-      <li><a href="/admin/journal-management">Journal Management</a></li>
-      <li><a href="/admin/rubric-management">Rubric Management</a></li>
-    </ul>
-  </nav>
+<app-navbar></app-navbar>
 
 <div id="container">
     <h1>Create Reviewer Account</h1>

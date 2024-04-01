@@ -133,7 +133,7 @@ markNotificationAsRead(notification: any) {
     this.snackBar.open('Logout successful.', 'Close', { duration: 3000, verticalPosition: 'top'});
     this.authService.setIsUserLogged(false);
     this.authService.clearUserId();
-    this.router.navigate(['login'])
+    this.router.navigate(['publication'])
   } 
 
   viewJournal(journalId: string) {

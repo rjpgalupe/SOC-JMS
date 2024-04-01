@@ -19,6 +19,9 @@ export class ReviewerAssignedJournalComponent {
   journals: any[] = [];
   filteredJournals: any[] = [];
   searchQuery: string = '';
+  currentPage = 1;
+  itemsPerPage = 5;
+
 
   constructor(private authService: AuthService,
               private router: Router, 
@@ -62,22 +65,17 @@ export class ReviewerAssignedJournalComponent {
 
   filterJournals() {
     if (!this.searchQuery.trim()) {
+      this.currentPage = 1; // Reset pagination to the first page
       this.filteredJournals = [...this.journals];
     } else {
-      const searchTerm = this.searchQuery.toLowerCase().trim();
+      const searchTerm = this.searchQuery.toLowerCase().trim().replace(/\s+/g, ' '); // Replace consecutive spaces with a single space
       this.filteredJournals = this.journals.filter(journal => {
-        // Check if the fields are defined before calling toLowerCase()
-        const id = journal.id ? journal.id.toString().toLowerCase() : '';
-        const title = journal.journalTitle ? journal.journalTitle.toLowerCase() : '';
-        const author = journal.author ? journal.author.toLowerCase() : '';
-        const status = journal.status ? journal.status.toLowerCase() : '';
-  
-        // Filter the journals based on any of the fields containing the searchTerm
-        return id.includes(searchTerm) ||
-               title.includes(searchTerm) ||
-               author.includes(searchTerm) ||
-               status.includes(searchTerm);
+        return (
+          journal.journalTitle.toLowerCase().includes(searchTerm) ||
+          journal.status.toLowerCase().includes(searchTerm)
+        );
       });
+      this.currentPage = 1; // Reset pagination to the first page when a new search query is entered
     }
   }
 
@@ -134,11 +132,49 @@ markNotificationAsRead(notification: any) {
     this.router.navigate(['/reviewer/view-journal', journalId]);
   }
 
+  isFeedbackSubmitted(journal: any): boolean {
+    // Check if the journal has review comments and if any of them belong to the current reviewer
+    return journal.reviewComments && journal.reviewComments.some((comment: any) => comment.reviewer === sessionStorage.getItem('userId'));
+  }
+
+  onPageChange(page: number) {
+    this.currentPage = page;
+  }
+  
+  
+
+  // Calculate the index of the first item displayed on the current page
+  get startIndex(): number {
+    return (this.currentPage - 1) * this.itemsPerPage;
+  }
+
+  // Calculate the index of the last item displayed on the current page
+  get endIndex(): number {
+    return Math.min(this.startIndex + this.itemsPerPage - 1, this.filteredJournals.length - 1);
+  }
+
+  getPageNumbers(): number[] {
+    const totalPages = Math.ceil(this.filteredJournals.length / this.itemsPerPage);
+    const visiblePages = Math.min(totalPages, 5); // Maximum 5 pages shown
+    const startPage = Math.max(1, this.currentPage - Math.floor(visiblePages / 2));
+    const endPage = Math.min(totalPages, startPage + visiblePages - 1);
+  
+    const pageNumbers = [];
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+    return pageNumbers;
+  }
+
+  goToPage(pageNumber: number) {
+    this.currentPage = pageNumber;
+  }
+
   logout() {
     this.snackBar.open('Logout successful.', 'Close', { duration: 3000, verticalPosition: 'top'});
     this.authService.setIsUserLogged(false);
     this.authService.clearUserId();
-    this.router.navigate(['login'])
+    this.router.navigate(['publication'])
   } 
   
 }

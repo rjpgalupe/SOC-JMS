@@ -71,6 +71,7 @@ export class SubmissionComponent {
         this.abstract = '';
         this.keywords = '';
         this.selectedFile = null;
+        this.sendAdminNotification();
       },
       (error) => {
         console.error(error);
@@ -80,6 +81,17 @@ export class SubmissionComponent {
     );
   }
 
+  sendAdminNotification() {
+    this.http.post<any>('https://jms-backend-testing.vercel.app/admin-notifications', {}).subscribe(
+      (response) => {
+        console.log('Admin notification sent:', response);
+      },
+      (error) => {
+        console.error('Error sending admin notification:', error);
+      }
+    );
+  }
+  
   markNotificationAsRead(notification: any) {
     // Update the notification as read in the backend
     const notificationId = notification._id;
@@ -109,7 +121,7 @@ export class SubmissionComponent {
       this.snackBar.open('Logout successful.', 'Close', { duration: 3000, verticalPosition: 'top'});
       this.authService.setIsUserLogged(false);
       this.authService.clearUserId();
-      this.router.navigate(['login'])
+      this.router.navigate(['publication'])
     } 
 
     toggleDropdown(){

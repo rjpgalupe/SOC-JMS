@@ -18,12 +18,12 @@ export class AuthGuard implements CanActivate {
         return true;
       } else {
         // User does not have the required role, redirect to unauthorized page or home page
-        this.router.navigate(['/login']);
+        this.router.navigate(['/publication']);
         return false;
       }
     } else {
-      // User is not authenticated, redirect to login page
-      this.router.navigate(['/login']);
+      // User is not authenticated, redirect to publication page
+      this.router.navigate(['/publication']);
       return false;
     }
   }

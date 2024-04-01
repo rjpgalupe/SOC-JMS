@@ -44,6 +44,10 @@ import { ViewRubricComponent } from './view-rubric/view-rubric.component';
 import { ConsolidationFeedbackComponent } from './consolidation-feedback/consolidation-feedback.component';
 import { ResearcherViewJournalComponent } from './researcher-view-journal/researcher-view-journal.component';
 import { PublicationComponent } from './publication/publication.component';
+import { ReassignReviewerComponent } from './reassign-reviewer/reassign-reviewer.component';
+import { EditorialBoardComponent } from './editorial-board/editorial-board.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { PublicationViewJournalComponent } from './publication-view-journal/publication-view-journal.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -52,30 +56,32 @@ const routes: Routes = [
   { path: 'admin/dashboard', component: AdminDashboardComponent, canActivate: [AuthGuard], data: { expectedRoles: ['superadmin', 'admin'] }},
   { path: 'researcher/dashboard', component: ResearcherDashboardComponent, canActivate: [AuthGuard], data: { expectedRoles: ['author'] }},
   { path: 'reviewer/dashboard', component: ReviewerDashboardComponent, canActivate: [AuthGuard], data: { expectedRoles: ['reviewer'] }},
-  { path: 'admin/user-management', component: UserManagementComponent},
-  { path: 'admin/reviewer-management', component: ReviewerManagementComponent},
-  { path: 'admin/journal-management', component: JournalManagementComponent},
-  { path: 'researcher/journal-submission', component: SubmissionComponent},
-  { path: 'admin/review-management/create-reviewer', component: CreateReviewerComponent},
-  { path: 'admin/review-management/assign-reviewer/:journalId/:journalTitle', component: AssignReviewerComponent },
-  { path: 'reviewer/assigned-journals', component: ReviewerAssignedJournalComponent},
-  { path: 'reviewer/view-journal/:journalId', component: ReviewerViewJournalComponent},
-  { path: 'researcher/journal-status', component: ResearcherJournalStatusComponent},
-  { path: 'superadmin/user-management', component: SuperadminUserManagementComponent},
-  { path: 'user-management/add-accounts', component: CreateAccountComponent},
+  { path: 'admin/user-management', component: UserManagementComponent, canActivate: [AuthGuard], data: { expectedRoles: ['superadmin', 'admin'] }},
+  { path: 'admin/reviewer-management', component: ReviewerManagementComponent, canActivate: [AuthGuard], data: { expectedRoles: ['superadmin', 'admin'] }},
+  { path: 'admin/journal-management', component: JournalManagementComponent, canActivate: [AuthGuard], data: { expectedRoles: ['superadmin', 'admin'] }},
+  { path: 'researcher/journal-submission', component: SubmissionComponent, canActivate: [AuthGuard], data: { expectedRoles: ['author'] }},
+  { path: 'admin/review-management/create-reviewer', component: CreateReviewerComponent,canActivate: [AuthGuard], data: { expectedRoles: ['superadmin', 'admin'] }},
+  { path: 'admin/review-management/assign-reviewer/:journalId/:journalTitle', component: AssignReviewerComponent, canActivate: [AuthGuard], data: { expectedRoles: ['superadmin', 'admin'] }},
+  { path: 'admin/review-management/reassign-reviewer/:journalId/:journalTitle', component: ReassignReviewerComponent, canActivate: [AuthGuard], data: { expectedRoles: ['superadmin', 'admin'] }},
+  { path: 'reviewer/assigned-journals', component: ReviewerAssignedJournalComponent, canActivate: [AuthGuard], data: { expectedRoles: ['reviewer'] }},
+  { path: 'reviewer/view-journal/:journalId', component: ReviewerViewJournalComponent, canActivate: [AuthGuard], data: { expectedRoles: ['reviewer'] }},
+  { path: 'researcher/journal-status', component: ResearcherJournalStatusComponent, canActivate: [AuthGuard], data: { expectedRoles: ['author'] }},
+  { path: 'superadmin/user-management', component: SuperadminUserManagementComponent, canActivate: [AuthGuard], data: { expectedRoles: ['superadmin', 'admin'] }},
+  { path: 'user-management/add-accounts', component: CreateAccountComponent, canActivate: [AuthGuard], data: { expectedRoles: ['superadmin', 'admin'] }},
   { path: 'account-settings', component: AccountSettingsComponent},
   { path: 'verify-email/:email', component: VerifyEmailComponent },
   { path: 'verify-email-result', component: VerifyEmailResultComponent },
   { path: 'reset-password/:resetToken', component: ResetPasswordComponent},
-  { path: 'admin/rubric-management', component: RubricManagementComponent},
-  { path: 'admin/user-management/edit-user', component: EditUserComponent},
-  { path: 'admin/rubric-management/create-rubric', component: CreateRubricComponent},
-  { path: 'admin/rubric-management/view-rubric/:rubricId', component: ViewRubricComponent},
+  { path: 'admin/rubric-management', component: RubricManagementComponent, canActivate: [AuthGuard], data: { expectedRoles: ['superadmin', 'admin'] }},
+  { path: 'admin/user-management/edit-user', component: EditUserComponent, canActivate: [AuthGuard], data: { expectedRoles: ['superadmin', 'admin'] }},
+  { path: 'admin/rubric-management/create-rubric', component: CreateRubricComponent, canActivate: [AuthGuard], data: { expectedRoles: ['superadmin', 'admin'] }},
+  { path: 'admin/rubric-management/view-rubric/:rubricId', component: ViewRubricComponent, canActivate: [AuthGuard], data: { expectedRoles: ['superadmin', 'admin'] }},
   { path: 'view-rubric/:rubricId', component: ViewRubricComponent},
-  { path: 'admin/consolidation-feedback/:journalId', component: ConsolidationFeedbackComponent},
-  { path: 'researcher/view-journal/:journalId', component: ResearcherViewJournalComponent},
+  { path: 'admin/consolidation-feedback/:journalId', component: ConsolidationFeedbackComponent, canActivate: [AuthGuard], data: { expectedRoles: ['superadmin', 'admin'] }},
+  { path: 'researcher/view-journal/:journalId', component: ResearcherViewJournalComponent, canActivate: [AuthGuard], data: { expectedRoles: ['author'] }},
   { path: 'publication', component: PublicationComponent},
-  { path: '', redirectTo: '/login', pathMatch: 'full' }
+  { path: 'publication-view-journal/:journalId', component: PublicationViewJournalComponent},
+  { path: '', redirectTo: '/pubication]', pathMatch: 'full' }
 ];
 
 @NgModule({
@@ -109,7 +115,11 @@ const routes: Routes = [
     ViewRubricComponent,
     ConsolidationFeedbackComponent,
     ResearcherViewJournalComponent,
-    PublicationComponent
+    PublicationComponent,
+    ReassignReviewerComponent,
+    EditorialBoardComponent,
+    NavbarComponent,
+    PublicationViewJournalComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

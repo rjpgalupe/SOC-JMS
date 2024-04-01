@@ -18,6 +18,8 @@ export class UserManagementComponent implements OnInit {
   isDropdownOpen = false;
   isSuperAdmin: boolean = false;
   isAdmin: boolean = false;
+  currentPage = 1;
+  itemsPerPage = 5;
 
   constructor(private authService: AuthService, 
               private router: Router, 
@@ -98,33 +100,60 @@ ngOnInit(): void {
 
   filterUsers() {
     if (!this.searchQuery.trim()) {
+      this.currentPage = 1; // Reset pagination to the first page
       this.filteredUsers = [...this.users];
     } else {
       const searchTerm = this.searchQuery.toLowerCase().trim();
       this.filteredUsers = this.users.filter(user => {
-        // Check if the fields are defined before calling toLowerCase()
-        const id = user.id ? user.id.toString().toLowerCase() : '';
-        const firstName = user.firstName ? user.firstName.toLowerCase() : '';
-        const lastName = user.lastName ? user.lastName.toLowerCase() : '';
-        const email = user.email ? user.email.toLowerCase() : '';
-        const role = user.role ? user.role.toLowerCase() : '';
-  
-        // Filter the users based on any of the fields containing the searchTerm
-        return id.includes(searchTerm) ||
-               firstName.includes(searchTerm) ||
-               lastName.includes(searchTerm) ||
-               email.includes(searchTerm) ||
-               role.includes(searchTerm);
+        const fullName = `${user.firstName.trim()} ${user.lastName.trim()}`.toLowerCase();
+        const nameRegExp = new RegExp(`\\b${searchTerm}\\b`, 'i'); // Match whole word, case insensitive
+        return (
+          user.id.toString().toLowerCase().includes(searchTerm) ||
+          fullName.match(nameRegExp) || // Match exactly with full name
+          user.email.toLowerCase().includes(searchTerm) ||
+          user.role.toLowerCase().includes(searchTerm)
+        );
       });
+      this.currentPage = 1; // Reset pagination to the first page when a new search query is entered
     }
   }
   
+  onPageChange(page: number) {
+    this.currentPage = page;
+  }
+
+  // Calculate the index of the first item displayed on the current page
+  get startIndex(): number {
+    return (this.currentPage - 1) * this.itemsPerPage;
+  }
+
+  // Calculate the index of the last item displayed on the current page
+  get endIndex(): number {
+    return Math.min(this.startIndex + this.itemsPerPage - 1, this.filteredUsers.length - 1);
+  }
+
+  getPageNumbers(): number[] {
+    const totalPages = Math.ceil(this.filteredUsers.length / this.itemsPerPage);
+    const visiblePages = Math.min(totalPages, 3); // Maximum 5 pages shown
+    const startPage = Math.max(1, this.currentPage - Math.floor(visiblePages / 2));
+    const endPage = Math.min(totalPages, startPage + visiblePages - 1);
+  
+    const pageNumbers = [];
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+    return pageNumbers;
+  }
+
+  goToPage(pageNumber: number) {
+    this.currentPage = pageNumber;
+  }
   
   logout() {
     this.snackBar.open('Logout successful.', 'Close', { duration: 3000, verticalPosition: 'top'});
     this.authService.setIsUserLogged(false);
     this.authService.clearUserId();
-    this.router.navigate(['login'])
+    this.router.navigate(['publication'])
   } 
 
   toggleDropdown(){

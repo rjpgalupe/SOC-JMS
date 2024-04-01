@@ -1,1 +1,35 @@
-<p>publication works!</p>
+<nav id="navbarH">
+    <h1></h1>
+    <ul>
+        <button id="login"><a href="/login">Log in</a></button>
+        <button id="register"><a href="/register">Sign Up</a></button>
+    </ul>
+</nav>
+
+<div class="container">
+    <div class="published">
+        <h2 class="header">Published Journals</h2>
+        <ul>
+            <li *ngFor="let journal of publishedJournals" class="journal-item">
+                <div class="journal-box">
+                    <button class="view" (click)="viewJournal(journal._id)">
+                        Title: {{ journal.journalTitle }}
+                    </button>                      
+                    <p>Authors: {{ journal.authors.join(', ') }}</p>
+                    <p>Date Published: {{ journal.publicationDate | date }}</p>
+                </div>
+            </li>
+            
+            <div class="pagination">
+                <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>
+                <span> 
+                    <!-- Iterate over page numbers and add click handler -->
+                    <ng-container *ngFor="let pageNumber of getPageNumbers()">
+                    <button (click)="goToPage(pageNumber)" [class.active]="pageNumber === currentPage">{{ pageNumber }}</button>
+                    </ng-container>
+                </span>
+                <button (click)="onPageChange(currentPage + 1)" [disabled]="endIndex === filteredJournals.length - 1">Next</button>
+            </div>
+        </ul>
+    </div>
+</div>
