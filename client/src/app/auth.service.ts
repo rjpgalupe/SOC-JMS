@@ -22,8 +22,10 @@ export class AuthService {
     return this.http.post(`${this.baseUrl}/login`, user);
   }
   setIsUserLogged(status:boolean):void {
-    this.isUserLogged.next(status)
+    this.isUserLogged.next(status);
+    sessionStorage.setItem('isLoggedIn', status ? 'true' : 'false');
   }
+
   getUserIsLogged():Observable<boolean>{
     return this.isUserLogged$
   }

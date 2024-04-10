@@ -1,38 +1,12 @@
-<!-- 
-<div class="min-h-[100vh]  grid place-content-center">
-    <div class="min-w-[27rem] bg-[#fe9800] p1 rounded-2xl">
-        <h1>Sign In</h1>
-        <form (submit)="login()">
-            <label for="email">Email: </label>
-            <input type="text" name="email" [(ngModel)]="email" placeholder="Enter your email">
-            <label for="password">Password: </label>
-            <input type="password" name="password" [(ngModel)]="password" placeholder="Enter your password">
-            <div class="check">
-                <input type="checkbox" name="remember">
-                <label for="remember">Remember Me</label>
-            </div>
-            <a routerLink="/forgot_password">Forgot Password? </a>
-            <input type="submit" value="Login">
-            <p>or</p>
-            <a routerLink="/register">Create an Account </a>
-        </form>
-    </div>
-</div>  
- -->
-
 
 <body>
     <div class="container">
-        <!-- <div class="image-container">
-            <img src="../../assets/soc_logo.png" alt="hau">
-        </div> -->
         <h1>Sign In</h1>
         <form (submit)="login()">
             <label for="email">Email: </label>
             <input type="text" name="email" [(ngModel)]="email" placeholder="Enter your email" required>
             <label for="password">Password: </label>
-            <!-- <input type="password" name="password" [(ngModel)]="password" placeholder="Enter your password" required> -->
-            <input type="{{ passwordVisible ? 'text' : 'password' }}" name="password" [(ngModel)]="password" placeholder="Enter your password">
+            <input type="{{ passwordVisible ? 'text' : 'password' }}" name="password" [(ngModel)]="password" placeholder="Enter your password" required>
             <div class="password-toggle" (click)="togglePasswordVisibility()">
                 <i class="fa-regular fa-eye" *ngIf="!passwordVisible"></i>
                 <i class="fa-regular fa-eye-slash" *ngIf="passwordVisible"></i>

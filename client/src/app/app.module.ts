@@ -13,6 +13,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 
 import { LoginComponent } from './login/login.component';
@@ -73,7 +74,7 @@ const routes: Routes = [
   { path: 'verify-email-result', component: VerifyEmailResultComponent },
   { path: 'reset-password/:resetToken', component: ResetPasswordComponent},
   { path: 'admin/rubric-management', component: RubricManagementComponent, canActivate: [AuthGuard], data: { expectedRoles: ['superadmin', 'admin'] }},
-  { path: 'admin/user-management/edit-user', component: EditUserComponent, canActivate: [AuthGuard], data: { expectedRoles: ['superadmin', 'admin'] }},
+  { path: 'admin/user-management/edit-user/:userId', component: EditUserComponent, canActivate: [AuthGuard], data: { expectedRoles: ['superadmin', 'admin'] }},
   { path: 'admin/rubric-management/create-rubric', component: CreateRubricComponent, canActivate: [AuthGuard], data: { expectedRoles: ['superadmin', 'admin'] }},
   { path: 'admin/rubric-management/view-rubric/:rubricId', component: ViewRubricComponent, canActivate: [AuthGuard], data: { expectedRoles: ['superadmin', 'admin'] }},
   { path: 'view-rubric/:rubricId', component: ViewRubricComponent},
@@ -133,7 +134,8 @@ const routes: Routes = [
     MatSnackBarModule,
     ReactiveFormsModule,
     FormsModule,
-    MatTableModule
+    MatTableModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

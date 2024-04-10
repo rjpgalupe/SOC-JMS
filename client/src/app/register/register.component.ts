@@ -15,12 +15,18 @@ export class RegisterComponent {
     password: string = '';
     role: string = 'author';
     passwordVisible: boolean = false;
-  
+    showPasswordCriteria: boolean = false;
+
     constructor(private router: Router, private authService: AuthService, private snackBar: MatSnackBar) {}
-  
+
     register() {
+      if (!this.isPasswordValid()) {
+        this.snackBar.open('Password does not meet the criteria!', 'Close', { duration: 3000, verticalPosition: 'top', panelClass: ['error-snackbar']});
+        return;
+      }
+
       const user = { email: this.email, firstName: this.firstName, lastName: this.lastName, password: this.password, role: this.role};
-  
+
       this.authService.register(user).subscribe(
         (response) => {
           console.log(response);
@@ -35,5 +41,21 @@ export class RegisterComponent {
 
     togglePasswordVisibility(): void {
       this.passwordVisible = !this.passwordVisible;
+    }
+
+    isAtLeastEightCharacters(): boolean {
+      return this.password.length >= 8;
+    }
+
+    hasUppercaseLowercaseLetters(): boolean {
+      return /[a-z]/.test(this.password) && /[A-Z]/.test(this.password);
+    }
+
+    hasSpecialCharacter(): boolean {
+      return /[!@#$%^&*(),.?":{}|<>]/.test(this.password);
+    }
+
+    isPasswordValid(): boolean {
+      return this.isAtLeastEightCharacters() && this.hasUppercaseLowercaseLetters() && this.hasSpecialCharacter();
     }
 }

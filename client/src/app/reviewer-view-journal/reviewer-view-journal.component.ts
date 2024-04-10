@@ -166,16 +166,17 @@ markNotificationAsRead(notification: any) {
       console.error('Journal ID not found');
       return;
     }
+    
 
-    // Check if feedback has already been submitted by the reviewer
-  if (this.journal && this.journal.reviewComments.some((comment: any) => String(comment.reviewer) === String(sessionStorage.getItem('userId')))) {
-    // Show Material Snackbar message
-    this.snackBar.open('Feedback has already been submitted by this reviewer', 'Close', {
-      duration: 3000, // Snackbar duration in milliseconds
-      verticalPosition: 'top' // Position the Snackbar at the top of the screen
-    });
-    return; // Exit the method
-  }
+  //   // Check if feedback has already been submitted by the reviewer
+  // if (this.journal && this.journal.reviewComments.some((comment: any) => String(comment.reviewer) === String(sessionStorage.getItem('userId')))) {
+  //   // Show Material Snackbar message
+  //   this.snackBar.open('Feedback has already been submitted by this reviewer', 'Close', {
+  //     duration: 3000, // Snackbar duration in milliseconds
+  //     verticalPosition: 'top' // Position the Snackbar at the top of the screen
+  //   });
+  //   return; // Exit the method
+  // }
   
     // Call the service method to submit feedback
     this.journalService.submitFeedback(this.journalId, this.feedback, this.selectedChoice, userId)
@@ -190,7 +191,7 @@ markNotificationAsRead(notification: any) {
         }
       );
   }
-
+  
   updateFeedback(event: Event) {
     const target = event.target as HTMLTextAreaElement;
     this.feedback = target.value;

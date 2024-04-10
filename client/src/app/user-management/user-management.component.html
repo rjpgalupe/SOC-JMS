@@ -2,18 +2,33 @@
 
 <div id="container">
   <div class="table-container">
-    <div class="searchBar">
-      <input type="text" placeholder="Search..." [(ngModel)]="searchQuery" (input)="filterUsers()">
-    </div>
 
     <button class="createUser"><a href="/user-management/add-accounts">Add User</a></button>
+    <input type="text" placeholder="Search..." class="searchBar" [(ngModel)]="searchQuery" (input)="filterUsers()">
+    
     <table>
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Full Name</th>
-          <th>Email</th>
-          <th>Role</th>
+          <th (click)="sortUsers('id')">
+            ID
+            <span *ngIf="sortColumn === 'id' && sortDirection === 'asc'">&#9660;</span> <!-- Downward arrow for ascending -->
+            <span *ngIf="sortColumn === 'id' && sortDirection === 'desc'">&#9650;</span> <!-- Upward arrow for descending -->
+          </th>
+          <th (click)="sortUsers('firstName')">
+            Full Name
+            <span *ngIf="sortColumn === 'firstName' && sortDirection === 'asc'">&#9660;</span>
+            <span *ngIf="sortColumn === 'firstName' && sortDirection === 'desc'">&#9650;</span>
+          </th>
+          <th (click)="sortUsers('email')">
+            Email
+            <span *ngIf="sortColumn === 'email' && sortDirection === 'asc'">&#9660;</span>
+            <span *ngIf="sortColumn === 'email' && sortDirection === 'desc'">&#9650;</span>
+          </th>
+          <th (click)="sortUsers('role')">
+            Role
+            <span *ngIf="sortColumn === 'role' && sortDirection === 'asc'">&#9660;</span>
+            <span *ngIf="sortColumn === 'role' && sortDirection === 'desc'">&#9650;</span>
+          </th>
           <th>Options</th>
         </tr>
       </thead>
@@ -27,7 +42,7 @@
             <div class="dropdown">
               <button class="dropbtn">Options</button>
               <div class="dropdown-content">
-                <button (click)="editUser(user)">
+                <button (click)="editUser(user._id)">
                   <i class="fa-solid fa-pen-to-square"></i> Edit
                 </button>
                 <button (click)="deleteUser(user._id)">

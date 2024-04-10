@@ -20,8 +20,9 @@ body{
     left: 350px;
     margin: 50px auto;
     max-width: 500px;
-    background-color: rgba(254, 152, 0, 0.9); /* Adjust the alpha value (0.0 to 1.0) for transparency */
+    background-color: #e58d05;
     padding: 30px;
+    border-radius: 20px;
     box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 1);
 }
 
@@ -37,8 +38,9 @@ form i:hover {
 }
 
 h1{
+    cursor: default;
     text-align: center;
-    font-size: 36px;
+    font-size: 42px;
     margin-bottom: 30px;
 }
 
@@ -48,7 +50,7 @@ form{
 }
 
 label{
-    text-align: center;
+    text-align: left;
     font-size: 18px;
     margin-bottom: 5px;
 }
@@ -92,13 +94,16 @@ a {
 }
 
 a:hover {
+    color: #191970;
     text-decoration: underline;
 }
 
 input[type="submit"]{
+    margin: 0 auto;
+    width: 200px;
     padding: 10px;
     border:none;
-    border-radius: 50px;
+    border-radius: 15px;
     color: #000;
     font-size: 18px;
     background-color: #efefee;

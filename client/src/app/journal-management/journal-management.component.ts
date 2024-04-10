@@ -185,14 +185,14 @@ publishJournal(journal: any) {
   );
 }
   
-  assignReviewer(journal: any) {
-    if (journal.status === "Under Review") {
-      this.router.navigate(['/admin/review-management/reassign-reviewer', journal._id, journal.journalTitle])
-    }
-    else {
-      this.router.navigate(['/admin/review-management/assign-reviewer', journal._id, journal.journalTitle]);
-    }
+assignReviewer(journal: any) {
+  if (journal.status === "Under Review" || journal.status === "Under Review (Revision)") {
+    this.router.navigate(['/admin/review-management/reassign-reviewer', journal._id, journal.journalTitle])
   }
+  else {
+    this.router.navigate(['/admin/review-management/assign-reviewer', journal._id, journal.journalTitle]);
+  }
+}
 
   viewConsolidatedFeedback(journalId: string) {
     // Navigate to the consolidated feedback page with the journalId

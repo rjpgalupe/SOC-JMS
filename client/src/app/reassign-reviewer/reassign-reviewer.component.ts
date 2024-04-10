@@ -103,11 +103,15 @@ export class ReassignReviewerComponent {
   
 
   assignReviewer(): void {
-    const reviewerIds = [this.reviewer1, this.reviewer2, this.reviewer3];
+    const reviewerIds = [
+      this.reviewer1 || this.currentReviewer1._id, // Use current value if not modified
+      this.reviewer2 || this.currentReviewer2._id, // Use current value if not modified
+      this.reviewer3 || this.currentReviewer3._id  // Use current value if not modified
+    ];
     const rubricId = this.selectedRubric; // Get the selected rubricId
   
     // Check if all required fields are filled
-    if (!this.selectedJournal || !reviewerIds.every(id => !!id) || !rubricId) {
+    if (!this.selectedJournal) {
       console.error('Please fill in all required fields.'); // Handle validation error
       return;
     }
@@ -119,8 +123,8 @@ export class ReassignReviewerComponent {
         
         // Reload reviewers list to reflect updated status
         this.loadReviewers();
-         // Update the journal status to 'Under Review' after assigning reviewers
-         this.updateJournalStatus(this.selectedJournal);
+        // Update the journal status to 'Under Review' after assigning reviewers
+        this.updateJournalStatus(this.selectedJournal);
         this.router.navigate(['/admin/journal-management']);
       },
       (error: any) => {
@@ -131,16 +135,36 @@ export class ReassignReviewerComponent {
   }
 
   // Method to update journal status to 'Under Review'
-  updateJournalStatus(journalId: string): void {
-    this.journalService.updateJournalStatus(journalId, 'Under Review').subscribe(
-      (response: any) => {
-        console.log('Journal status updated to "Under Review"');
-      },
-      (error: any) => {
-        console.error('Error updating journal status:', error);
+updateJournalStatus(journalId: string): void {
+  this.journalService.getJournalById(journalId).subscribe(
+    (data: any) => {
+      const status = data.status; // Assuming the API response contains the status of the journal
+      if (status === "Under Review (Revision)") {
+        this.journalService.updateJournalStatus(journalId, 'Under Review (Revision)').subscribe(
+          (response: any) => {
+            console.log('Journal status updated to "Under Review (Revision)"');
+          },
+          (error: any) => {
+            console.error('Error updating journal status:', error);
+          }
+        );
+      } else if (status === "Under Review"){
+        this.journalService.updateJournalStatus(journalId, 'Under Review').subscribe(
+          (response: any) => {
+            console.log('Journal status updated to "Under Review"');
+          },
+          (error: any) => {
+            console.error('Error updating journal status:', error);
+          }
+        );
       }
-    );
-  }
+    },
+    (error: any) => {
+      console.error(error);
+      // Handle error scenario
+    }
+  );
+}
   
   filteredReviewers(selectedReviewer1: string, selectedReviewer2: string): any[] {
     return this.reviewers.filter(reviewer => {

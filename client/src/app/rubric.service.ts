@@ -22,4 +22,7 @@ export class RubricService {
     return this.http.get<any>(`${this.apiUrl}/rubrics/${rubricId}`);
   }
   
+  deleteRubrics(rubricId: string): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/rubrics/${rubricId}`);
+  }
 }

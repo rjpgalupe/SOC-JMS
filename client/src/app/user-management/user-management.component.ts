@@ -20,6 +20,8 @@ export class UserManagementComponent implements OnInit {
   isAdmin: boolean = false;
   currentPage = 1;
   itemsPerPage = 5;
+  sortDirection: string = 'asc'; // Default sorting direction
+  sortColumn: string = '';
 
   constructor(private authService: AuthService, 
               private router: Router, 
@@ -54,9 +56,9 @@ ngOnInit(): void {
   this.loadUsers();
 }
 
-  editUser(user: any) {
-    this.router.navigate(['/admin/user-management/edit-user']);
-  }
+editUser(userId: string) {
+  this.router.navigate(['/admin/user-management/edit-user', userId]);
+}
   
   deleteUser(userId: string) {
     if (confirm('Are you sure you want to delete this user?')) {
@@ -96,6 +98,31 @@ ngOnInit(): void {
         // Handle error
       }
     );
+  }
+
+  sortUsers(column: string) {
+    // If the same column is clicked, toggle the sorting direction
+    if (column === this.sortColumn) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      // If a different column is clicked, reset the sorting direction to ascending
+      this.sortDirection = 'asc';
+      this.sortColumn = column;
+    }
+  
+    // Sort the users based on the selected column and direction
+    this.filteredUsers.sort((a, b) => {
+      const valA = typeof a[column] === 'string' ? a[column].toLowerCase() : a[column];
+      const valB = typeof b[column] === 'string' ? b[column].toLowerCase() : b[column];
+  
+      if (valA < valB) {
+        return this.sortDirection === 'asc' ? -1 : 1;
+      }
+      if (valA > valB) {
+        return this.sortDirection === 'asc' ? 1 : -1;
+      }
+      return 0;
+    });
   }
 
   filterUsers() {

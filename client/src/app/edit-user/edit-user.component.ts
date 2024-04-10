@@ -1,67 +1,53 @@
-import { Component,HostListener } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../auth.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from '../user.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-edit-user',
   templateUrl: './edit-user.component.html',
   styleUrls: ['./edit-user.component.css']
 })
-export class EditUserComponent {
-  isAdmin: boolean = false;
-  isSuperAdmin: boolean = false;
-  unreadNotifications: any[] = [];
-  showNotifDropdown: boolean = false;
-  isDropdownOpen = false;
+export class EditUserComponent implements OnInit {
+  user: any;
+  roles: string[] = ['reviewer', 'author'];
 
   constructor(private authService: AuthService, 
-              private router: Router, 
-              private snackBar: MatSnackBar) {}
-  
+    private router: Router, 
+    private snackBar: MatSnackBar,
+    private userService: UserService,
+    private route: ActivatedRoute) {}
+
   ngOnInit(): void {
-    // Retrieve user role from session storage
-    const userRole = sessionStorage.getItem('userRole');
-    // Check if the user is an admin or superadmin
-    this.isAdmin = userRole === 'admin';
-    this.isSuperAdmin = userRole === 'superadmin';
+    this.route.paramMap.subscribe(params => {
+      const userId = params.get('userId'); // Get the user ID from route parameters
+      if (userId) {
+        this.userService.getUserById(userId).subscribe(
+          (user: any) => {
+            this.user = user;
+          },
+          (error: any) => {
+            console.error('Error fetching user:', error);
+          }
+        );
+      }
+    });
   }
 
-    @HostListener('document:click', ['$event'])
-    onDocumentClick(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-
-    // Check if the click is inside the dropdown toggle button
-    if (target.matches('.dropdown-toggle')) {
-      this.toggleDropdown(); // Toggle the dropdown
-    } else {
-      // Check if the click is outside the dropdown
-      const dropdownContainer = target.closest('.dropdown');
-      if (!dropdownContainer && this.isDropdownOpen) {
-        this.isDropdownOpen = false;
+  saveChanges() {
+    // Call the user service to update the user information
+    this.userService.updateUser(this.user).subscribe(
+      (updatedUser: any) => {
+        this.snackBar.open('Changes saved successfully', 'Close', { duration: 3000, verticalPosition: 'top'});
+        // Optionally, navigate to another page or handle success
+      },
+      (error: any) => {
+        console.error('Error saving changes:', error);
+        this.snackBar.open('Error saving changes!', 'Close', { duration: 3000, verticalPosition: 'top'});
+        // Handle error
       }
-      const notifDropdown = target.closest('.dropdown');
-      if (!notifDropdown && this.showNotifDropdown) {
-        this.showNotifDropdown = false;
-      }
-    }
+    );
   }
-
-  logout() {
-    this.snackBar.open('Logout successful.', 'Close', { duration: 3000, verticalPosition: 'top'});
-    this.authService.setIsUserLogged(false);
-    this.authService.clearUserId();
-    this.router.navigate(['publication'])
-  } 
-
-    toggleDropdown(){
-      this.isDropdownOpen = !this.isDropdownOpen;
-      this.showNotifDropdown = false;
-    }
-  
-    toggleNotifDropdown(){
-      this.showNotifDropdown = !this.showNotifDropdown;
-      this.isDropdownOpen = false;
-    }
 }

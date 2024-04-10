@@ -19,6 +19,7 @@ export class PublicationComponent {
   publishedJournals: any[] = [];
   filteredJournals: any[] = [];
   searchQuery: string = '';
+  userRole: string = '';
   currentPage = 1;
   itemsPerPage = 5;
 
@@ -30,6 +31,11 @@ export class PublicationComponent {
 
   ngOnInit(): void {
     this.currentPage = 1;
+    
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+    this.userRole = sessionStorage.getItem('userRole') || '';
+
+    this.isLoggedIn = isLoggedIn === 'true'; // Convert string to boolean
     this.fetchPublishedJournals();
   }
 
@@ -129,9 +135,20 @@ export class PublicationComponent {
     this.isDropdownOpen = false;
   }
 
+  getDashboardLink(): string {
+    if (this.userRole === 'author') {
+      return `/researcher/dashboard`;
+    }
+    else {
+      return `/${this.userRole}/dashboard`;
+    }
+  }
+
   logout() {
     this.authService.setIsUserLogged(false);
     this.authService.clearUserId();
-    this.router.navigate(['publication'])
+    this.router.navigateByUrl('/login', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/publication']);
+    });
   } 
 }

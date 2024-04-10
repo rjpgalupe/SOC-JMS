@@ -75,6 +75,23 @@ fetchRubrics() {
   );
 }
 
+deleteRubric(rubricId: string) {
+  if (confirm('Are you sure you want to delete this rubric?')) {
+    this.rubricService.deleteRubrics(rubricId).subscribe(
+      () => {
+        // Reload users after successful deletion
+        this.fetchRubrics();
+        this.snackBar.open('Delete Success', 'Close', { duration: 3000, verticalPosition: 'top'});
+      },
+      (error) => {
+        console.error('Error deleting user:', error);
+        this.snackBar.open('Delete Failed!', 'Close', { duration: 3000, verticalPosition: 'top'});
+        // Handle error
+      }
+    );
+  }
+}
+
 viewRubric(rubricId: string) {
   this.router.navigate(['/admin/rubric-management/view-rubric/', rubricId]);
 }

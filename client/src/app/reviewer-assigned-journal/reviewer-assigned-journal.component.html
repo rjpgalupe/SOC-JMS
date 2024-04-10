@@ -2,9 +2,8 @@
 
 <div class="containerBox">
   <div class="table-container">
-    <div class="searchBar">
-      <input type="text" placeholder="Search..." [(ngModel)]="searchQuery" (input)="filterJournals()">
-    </div>
+
+      <input type="text" placeholder="Search..." class="searchBar" [(ngModel)]="searchQuery" (input)="filterJournals()">
     
     <table>
       <thead>
@@ -24,7 +23,7 @@
           <td>{{ journal.authors.join(', ') }}</td>
           <td>{{ journal.status }}</td>
           <td>
-            <button class="view" [disabled]="isFeedbackSubmitted(journal)" (click)="viewJournal(journal._id)">View</button>
+            <button class="view" [disabled]="journal.status !== 'Under Review' && journal.status !== 'Under Review (Revision)'" (click)="viewJournal(journal._id)">View</button>
           </td>
         </tr>
       </tbody>
@@ -38,7 +37,6 @@
         </ng-container>
       </span>
       <button (click)="onPageChange(currentPage + 1)" [disabled]="endIndex === filteredJournals.length - 1">Next</button>
-
     </div>
   </div>
 </div>

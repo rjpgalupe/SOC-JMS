@@ -2,12 +2,10 @@
 
   <div id="container">
     <div class="table-container">
-      <div class="searchBar">
-        <input type="text" placeholder="Search..." [(ngModel)]="searchQuery" (input)="filterRubrics()">
-      </div>
-  
+      
       <button class="createRubric"><a href="/admin/rubric-management/create-rubric">Create Rubric</a></button>
-
+      <input type="text" placeholder="Search..." class="searchBar" [(ngModel)]="searchQuery" (input)="filterRubrics()">
+      
       <table>
         <thead>
           <tr>
@@ -22,8 +20,8 @@
             <td>{{ rubric.name }}</td>
             <td>
               <button class="view" (click)="viewRubric(rubric._id)">View</button>
-              <!-- <button><i class="fa-solid fa-pen-to-square"></i></button>
-              <button><i class="fa-solid fa-trash-can"></i></button> -->
+              <!-- <button><i class="fa-solid fa-pen-to-square"></i></button> -->
+              <button (click)="deleteRubric(rubric._id)"><i class="fa-solid fa-trash-can"></i></button>
             </td>
           </tr>
         </tbody>

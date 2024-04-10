@@ -19,6 +19,8 @@ export class ResearcherViewJournalComponent implements OnInit{
   journalId: string = '';
   journalTitle: string = '';
   consolidatedFeedback: string = '';
+  selectedFile: File | null = null;
+  status: string = ''; // Add status property
 
   constructor (private router: Router, 
               private authService: AuthService, 
@@ -32,6 +34,7 @@ export class ResearcherViewJournalComponent implements OnInit{
       this.journalId = params.get('journalId') || '';
       if (this.journalId) {
         this.getConsolidatedFeedback();
+        this.getJournalStatus();
       }
     });
   }
@@ -43,6 +46,19 @@ export class ResearcherViewJournalComponent implements OnInit{
           // Assuming the response contains consolidated feedback
           this.consolidatedFeedback = data.consolidatedFeedback;
           this.journalTitle = data.journalTitle;
+        },
+        (error) => {
+          console.error(error);
+          // Handle error scenario
+        }
+      );
+  }
+
+  getJournalStatus(): void {
+    this.journalService.getJournalById(this.journalId)
+      .subscribe(
+        (data) => {
+          this.status = data.status; // Assuming the API response contains the status of the journal
         },
         (error) => {
           console.error(error);
@@ -66,6 +82,56 @@ export class ResearcherViewJournalComponent implements OnInit{
             console.error('Error marking notification as read:', error);
         }
     );
+  }
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+  }
+
+  submitRevisedJournal(): void {
+    if (!this.selectedFile) {
+      // Handle case where no file is selected for submission
+      return;
+    }
+    const formData = new FormData();
+    formData.append('journalFile', this.selectedFile, this.selectedFile.name);
+    formData.append('journalId', this.journalId); // Include the journalId in the form data
+    formData.append('journalTitle', this.journalTitle); // Include the journalTitle in the form data
+  
+    this.http.post<any>('https://jms-backend-testing.vercel.app/journals', formData)
+      .subscribe(
+        (response) => {
+          // Handle success scenario
+          this.snackBar.open('Revised journal submitted successfully.', 'Close', { duration: 3000, verticalPosition: 'top'});
+          console.log(response);
+  
+          // Update the journal status to "Under Review (Revision)"
+          this.updateJournalStatus();
+  
+          // Redirect or perform any other action as needed
+        },
+        (error) => {
+          console.error(error);
+          // Handle error scenario
+          this.snackBar.open('Failed to submit revised journal.', 'Close', { duration: 3000, verticalPosition: 'top', panelClass: ['error-snackbar']});
+        }
+      );
+  }
+  
+  updateJournalStatus(): void {
+    const updatedStatus = 'Under Review (Revision)';
+    // Assuming you have a service method to update the journal status
+    this.journalService.updateJournalStatus(this.journalId, updatedStatus)
+      .subscribe(
+        () => {
+          // Update the status property locally
+          this.status = updatedStatus;
+        },
+        (error) => {
+          console.error(error);
+          // Handle error scenario
+        }
+      );
   }
 
   @HostListener('document:click', ['$event'])
